@@ -4,7 +4,79 @@ app = Flask(__name__)
 
 @app.errorhandler(404)
 def not_found(err):
-    return "Нет такой страницы", 404
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>404 - Страница не найдена</title>
+        <style>
+            body {
+                font-family: 'Arial';
+                background: linear-gradient(135deg, white 0%, black 100%);
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+            }
+            .container {
+                text-align: center;
+                background: grey;
+                padding: 40px;
+                border-radius: 20px;
+                box-shadow: 0 8px 32px #002;
+                max-width: 900px;
+            }
+            h1 {
+                font-size: 50pt;
+                margin: 0;
+                text-shadow: 2px 2px 4px #002;
+            }
+            .cat-image {
+                max-width: 750px;
+                border-radius: 10px;
+                margin: 20px 0;
+            }
+            .home-button {
+                display: inline-block;
+                padding: 12px 30px;
+                background: white;
+                color: black;
+                text-decoration: none;
+                border-radius: 25px;
+                font-weight: bold;
+                transition: 0.3s;
+                margin: 20px 0;
+            }
+            .home-button:hover {
+                background: lightgrey;
+                transform: translateY(-2px);
+            }
+            .cat-404 {
+                font-size: 14pt;
+                margin: 20px 0;
+                color: white;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>404 NOT FOUND</h1>
+            
+            <img src="''' + url_for("static", filename="404.jpg") + '''" class="cat-image">
+                
+            <div class="cat-404">
+                О КАК... Страницы нет!
+            </div>
+            
+            <a href="/" class="home-button">На главную страницу</a>
+        </div>
+    </body>
+</html>
+''', 404
 
 @app.route("/")
 @app.route("/index")
