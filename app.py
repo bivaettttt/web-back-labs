@@ -78,6 +78,28 @@ def not_found(err):
 </html>
 ''', 404
 
+@app.errorhandler(500)
+def internal_server_error(err):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>500 - Ошибка сервера</title>
+    </head>
+    <body>
+        <h1>500 - Внутренняя ошибка сервера</h1>
+        <p>Произошла непредвиденная ошибка на сервере.</p>
+        <p>Попробуйте обновить страницу или вернуться позже.</p>
+        <a href="/">Вернуться на главную</a>
+    </body>
+</html>
+''', 500
+
+@app.route('/error500')
+def cause_error():
+    result = 10 / 0
+    return "Эта строка никогда не выполнится"
+
 @app.route("/")
 @app.route("/index")
 def index():
