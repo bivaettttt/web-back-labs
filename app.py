@@ -2,8 +2,22 @@ from flask import Flask, url_for, request, redirect
 import datetime
 app = Flask(__name__)
 
+access_log = []
+
+@app.before_request
+def log_requests():
+    client_ip = request.remote_addr
+    access_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    requested_url = request.url
+    log_entry = f"{access_date} - IP: {client_ip} - URL: {requested_url}"
+    access_log.append(log_entry)
+
 @app.errorhandler(404)
 def not_found(err):
+    client_ip = request.remote_addr
+    access_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    requested_url = request.url
+    
     return '''
 <!doctype html>
 <html>
@@ -14,20 +28,18 @@ def not_found(err):
                 font-family: 'Arial';
                 background: linear-gradient(135deg, white 0%, black 100%);
                 margin: 0;
-                padding: 0;
+                padding: 20px;
                 min-height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 color: white;
             }
             .container {
                 text-align: center;
-                background: grey;
+                background: black;
                 padding: 40px;
                 border-radius: 20px;
                 box-shadow: 0 8px 32px #002;
                 max-width: 900px;
+                margin: 0 auto;
             }
             h1 {
                 font-size: 50pt;
@@ -35,7 +47,7 @@ def not_found(err):
                 text-shadow: 2px 2px 4px #002;
             }
             .cat-image {
-                max-width: 750px;
+                max-width: 700px;
                 border-radius: 10px;
                 margin: 20px 0;
             }
@@ -49,9 +61,12 @@ def not_found(err):
                 font-weight: bold;
                 transition: 0.3s;
                 margin: 20px 0;
+                border: 2px solid transparent;
             }
             .home-button:hover {
-                background: lightgrey;
+                color: white;
+                background: black;
+                border-color: white;
                 transform: translateY(-2px);
             }
             .cat-404 {
@@ -60,19 +75,51 @@ def not_found(err):
                 color: white;
                 font-weight: bold;
             }
+            .log-container {
+                margin-top: 30px;
+                padding: 20px;
+                border-radius: 10px;
+                text-align: left;
+            }
+            .log-container h3 {
+                color: royalblue;
+                border-bottom: 1px solid lightblue;
+                padding-bottom: 10px;
+            }
+            .log-list {
+                max-height: 300px;
+                overflow-y: auto;
+                font-family: monospace;
+                font-size: 12px;
+                padding: 10px;
+                border-radius: 5px;
+            }
         </style>
     </head>
     <body>
         <div class="container">
             <h1>404 NOT FOUND</h1>
             
-            <img src="''' + url_for("static", filename="404.jpg") + '''" class="cat-image">
+            <img src="''' + url_for("static", filename="404.jpg") + '''" class="cat-image" alt="Ошибка 404">
                 
             <div class="cat-404">
                 О КАК... Страницы нет!
             </div>
             
             <a href="/" class="home-button">На главную страницу</a>
+            
+            <div class="log-container">
+                <h3>Информация о текущем запросе:</h3>
+                <p><strong>IP-адрес:</strong> ''' + client_ip + '''</p>
+                <p><strong>Дата и время:</strong> ''' + access_date + '''</p>
+                <p><strong>Запрошенный URL:</strong> ''' + requested_url + '''</p>
+                
+                <h3>Полный лог посещений (все адреса):</h3>
+                <div class="log-list">
+''' + ('<p>Лог пуст</p>' if not access_log else '<ul>' + ''.join([f'<li>{entry}</li>' for entry in access_log]) + '</ul>') + '''
+                </div>
+                <p><strong>Всего записей в логе:</strong> ''' + str(len(access_log)) + '''</p>
+            </div>
         </div>
     </body>
 </html>
