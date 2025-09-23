@@ -182,7 +182,8 @@ def author():
 def image():
     path = url_for("static", filename="oak.jpg")
     css_path = url_for("static", filename="lab1.css")
-    return '''
+    
+    html_content = '''
 <!doctype html>
 <html>
     <head>
@@ -194,6 +195,15 @@ def image():
     </body>
 </html>
 '''
+    
+    headers = {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Content-Language': 'ru',
+        'X-Developer': 'Timur Nadrshin',
+        'X-Image-Source': 'Nature Gallery',
+    }
+    
+    return html_content, 200, headers
 
 count = 0
 
