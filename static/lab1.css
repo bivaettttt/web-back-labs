@@ -1,0 +1,16 @@
+img {
+    width: 500px;
+    height: 500px;
+    display: block;
+    margin: 0 auto;
+}
+
+body {
+    background-color: lightskyblue;
+}
+
+h1 {
+    text-align: center;
+    font-size: 26pt;
+    font-style: italic;
+}
