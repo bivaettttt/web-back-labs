@@ -155,3 +155,99 @@ def created():
     </body>
 </html>
 ''', 201
+
+@app.route("/400")
+def bad_request():
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>400 Bad Request</title>
+    </head>
+    <body>
+        <h1>400 Bad Request</h1>
+        <p>Сервер не может обработать запрос из-за клиентской ошибки (неправильный синтаксис, неверный запрос и т.д.)</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 400
+
+@app.route("/401")
+def unauthorized():
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>401 Unauthorized</title>
+    </head>
+    <body>
+        <h1>401 Unauthorized</h1>
+        <p>Требуется аутентификация для доступа к ресурсу.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 401
+
+@app.route("/402")
+def payment_required():
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>402 Payment Required</title>
+    </head>
+    <body>
+        <h1>402 Payment Required</h1>
+        <p>Зарезервировано для будущего использования. Первоначально предназначалось для цифровых платежных систем.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 402
+
+@app.route("/403")
+def forbidden():
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>403 Forbidden</title>
+    </head>
+    <body>
+        <h1>403 Forbidden</h1>
+        <p>Доступ к запрошенному ресурсу запрещен, даже при аутентификации.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 403
+
+@app.route("/405")
+def method_not_allowed():
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>405 Method Not Allowed</title>
+    </head>
+    <body>
+        <h1>405 Method Not Allowed</h1>
+        <p>Метод запроса не поддерживается для данного ресурса.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 405
+
+@app.route("/418")
+def teapot():
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>418 I'm a teapot</title>
+    </head>
+    <body>
+        <h1>418 I'm a teapot</h1>
+        <p>Я - чайник. Этот код был введен как первоапрельская шутка в 1998 году.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 418
