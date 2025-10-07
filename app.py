@@ -553,3 +553,30 @@ books = [
 @app.route('/lab2/books')
 def books_list():
     return render_template('books.html', books = books)
+
+cars = [
+    {'name': 'Toyota Camry', 'image': 'camry.jpg', 'description': 'Надежный седан бизнес-класса'},
+    {'name': 'Honda Civic', 'image': 'civic.jpg', 'description': 'Компактный автомобиль с отличной экономией'},
+    {'name': 'BMW X5', 'image': 'x5.jpg', 'description': 'Премиальный кроссовер от немецкого бренда'},
+    {'name': 'Mercedes-Benz S-Class', 'image': 'sclass.jpg', 'description': 'Флагманский седан класса люкс'},
+    {'name': 'Audi A4', 'image': 'a4.jpg', 'description': 'Спортивный седан премиум-класса'},
+    {'name': 'Ford Mustang', 'image': 'mustang.jpg', 'description': 'Легендарный американский мускулкар'},
+    {'name': 'Volkswagen Golf', 'image': 'golf.jpg', 'description': 'Компактный хэтчбек с богатой историей'},
+    {'name': 'Hyundai Solaris', 'image': 'solaris.jpg', 'description': 'Популярный седан для города'},
+    {'name': 'Kia Rio', 'image': 'rio.jpg', 'description': 'Стильный и экономичный седан'},
+    {'name': 'Nissan Qashqai', 'image': 'qashqai.jpg', 'description': 'Компактный кроссовер для семьи'},
+    {'name': 'Mercedes-Benz G-Class', 'image': 'gclass.jpg', 'description': 'Легендарный внедорожник класса люкс'},
+    {'name': 'BMW M5', 'image': 'm5.jpg', 'description': 'Высокопроизводительный спортивный седан'},
+    {'name': 'Subaru Outback', 'image': 'outback.jpg', 'description': 'Универсал повышенной проходимости'},
+    {'name': 'Mazda CX-5', 'image': 'cx5.jpg', 'description': 'Стильный кроссовер с отличной управляемостью'},
+    {'name': 'Volvo XC90', 'image': 'xc90.jpg', 'description': 'Безопасный и комфортный SUV'},
+    {'name': 'Porsche 911', 'image': '911.jpg', 'description': 'Легендарный спортивный автомобиль'},
+    {'name': 'Jeep Wrangler', 'image': 'wrangler.jpg', 'description': 'Внедорожник для настоящих приключений'},
+    {'name': 'Tesla Model 3', 'image': 'model3.jpg', 'description': 'Электрический седан будущего'},
+    {'name': 'Land Rover Defender', 'image': 'defender.jpg', 'description': 'Легендарный внедорожник'},
+    {'name': 'Ferrari 488', 'image': 'ferrari.jpg', 'description': 'Итальянский суперкар'}
+]
+
+@app.route('/lab2/cars')
+def cars_list():
+    return render_template('cars.html', cars = cars)

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block style %}
+    .car-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+    }
+    .car-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        width: 385px;
+        text-align: center;
+    }
+    .car-image {
+        width: 300px;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+    .car-name {
+        font-weight: bold;
+        margin: 10px 0;
+    }
+    .car-description {
+        font-size: 14px;
+        color: #666;
+    }
+{% endblock %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 2{% endblock %}
+
+{# основной контент: #}
+{% block main %}
+    <h1>Каталог автомобилей</h1>
+    <div class="car-container">
+        {% for car in cars %}
+        <div class="car-card">
+            <img src="{{ url_for('static', filename=car.image) }}" alt="{{ car.name }}" class="car-image">
+            <div class="car-name">{{ car.name }}</div>
+            <div class="car-description">{{ car.description }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    <p>Всего автомобилей: {{ cars | length }}</p>
+{% endblock %}
