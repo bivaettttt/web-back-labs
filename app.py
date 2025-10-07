@@ -165,6 +165,7 @@ def index():
         <main>
             <ol>
                 <li><a href="/lab1">Первая лабораторная</a></li>
+                <li><a href="/lab2">Вторая лабораторная</a></li>
             </ol>
         </main>
         
@@ -221,9 +222,9 @@ def lab1():
 def web():
     return """<!doctype html>
         <html>
-           <body>
-               <h1>web-сервер на flask</h1>
-           </body>
+            <body>
+                <h1>web-сервер на flask</h1>
+            </body>
         </html>""", 200, {
             'X-Server': 'sample',
             'Content-Type': 'text/plain; charset=utf-8'
@@ -237,12 +238,12 @@ def author():
     
     return """<!doctype html>
         <html>
-           <body>
-               <p>Студент: """ + name + """</p>
-               <p>Группа: """ + group + """</p>
-               <p>Факультет: """ + faculty + """</p>
-               <a href="/lab1/web">web</a>
-           </body>
+            <body>
+                <p>Студент: """ + name + """</p>
+                <p>Группа: """ + group + """</p>
+                <p>Факультет: """ + faculty + """</p>
+                <a href="/lab1/web">web</a>
+            </body>
         </html>"""
 
 @app.route('/lab1/image')
@@ -423,6 +424,10 @@ def teapot():
 </html>
 ''', 418
 
+@app.route('/lab2/')
+def lab2():
+    return render_template('lab2.html')
+
 @app.route('/lab2/a')
 def a():
     return 'без слэша'
@@ -510,10 +515,6 @@ def example():
     return render_template('example.html',
                             name = name, num = num, group = group,
                             course = course, fruits = fruits)
-
-@app.route('/lab2/')
-def lab2():
-    return render_template('lab2.html')
 
 @app.route('/lab2/filters')
 def filters():
