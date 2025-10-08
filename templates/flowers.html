@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block lab %}Все цветы{% endblock %}
+
+{% block main %}
+    <h1>Все цветы</h1>
+    
+    {% if flowers %}
+        <table border="1" style="border-collapse: collapse; width: 100%;">
+            <tr>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Действия</th>
+            </tr>
+            {% for flower in flowers %}
+            <tr>
+                <td>{{ flower.name }}</td>
+                <td>{{ flower.price }} руб.</td>
+                <td><a href="/lab2/delete_flower/{{ loop.index0 }}">Удалить</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Список цветов пуст</p>
+    {% endif %}
+    
+    <p><strong>Всего цветов:</strong> {{ flowers | length }}</p>
+    
+    <h2>Добавить новый цветок</h2>
+    <form action="/lab2/add_flower_form">
+        <input type="text" name="name" placeholder="Название цветка" required>
+        <input type="number" name="price" placeholder="Цена" required>
+        <input type="submit" value="Добавить">
+    </form>
+    
+    <p><a href="/lab2/clear_flowers">Удалить все цветы</a></p>
+{% endblock %}

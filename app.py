@@ -436,71 +436,53 @@ def a():
 def a2():
     return 'со слэшем'
 
-flower_list = ['роза', 'тюльпан', 'незабудка', 'ромашка']
+flower_list = [
+    {'name': 'роза', 'price': 150},
+    {'name': 'тюльпан', 'price': 80},
+    {'name': 'незабудка', 'price': 50},
+    {'name': 'ромашка', 'price': 40}
+]
 
 @app.route('/lab2/flowers/<int:flower_id>')
 def flower(flower_id):
     if flower_id >= len(flower_list):
         abort(404)
     else:
-        return f'''
-<!doctype html>
-<html>
-    <body>
-        <h1>Цветок №{flower_id}</h1>
-        <p>Название: {flower_list[flower_id]}</p>
-        <a href="/lab2/flowers">Посмотреть все цветы</a>
-    </body>
-</html>
-'''
+        return render_template('flower.html', flower=flower_list[flower_id], flower_id=flower_id)
 
-@app.route('/lab2/add_flower/<name>')
-def add_flower(name):
-    flower_list.append(name)
-    return f'''
-<!doctype html>
-<html>
-    <body>
-    <h1>Добавлен новый цветок</h1>
-    <p>Название нового цветка: {name} </p>
-    <p>Всего цветов: {len(flower_list)}</p>
-    <p>Полный список: {flower_list}</p>
-    </body>
-</html>
-'''
+@app.route('/lab2/add_flower/<name>/<int:price>')
+def add_flower(name, price):
+    flower_list.append({'name': name, 'price': price})
+    return redirect('/lab2/flowers')
 
 @app.route('/lab2/add_flower/')
-def add_flower_nothing():
-    return 'Вы не задали имя цветка', 400
+def add_flower_empty():
+    return 'Вы не задали имя цветка и цену', 400
 
 @app.route('/lab2/flowers')
 def all_flowers():
-    return f'''
-<!doctype html>
-<html>
-    <body>
-        <h1>Все цветы</h1>
-        <p>Количество цветов: {len(flower_list)}</p>
-        <ul>
-            <li>{'</li><li>'.join(flower_list)}</li>
-        </ul>
-        <a href="/lab2/clear_flowers">Очистить список цветов</a>
-    </body>
-</html>
-'''
+    return render_template('flowers.html', flowers=flower_list)
 
 @app.route('/lab2/clear_flowers')
 def clear_flowers():
     flower_list.clear()
-    return '''
-<!doctype html>
-<html>
-    <body>
-        <h1>Список цветов очищен</h1>
-        <a href="/lab2/flowers">Посмотреть все цветы</a>
-    </body>
-</html>
-'''
+    return redirect('/lab2/flowers')
+
+@app.route('/lab2/delete_flower/<int:flower_id>')
+def delete_flower(flower_id):
+    if flower_id >= len(flower_list):
+        abort(404)
+    else:
+        flower_list.pop(flower_id)
+        return redirect('/lab2/flowers')
+
+@app.route('/lab2/add_flower_form')
+def add_flower_form():
+    name = request.args.get('name')
+    price = request.args.get('price')
+    if name and price:
+        flower_list.append({'name': name, 'price': int(price)})
+    return redirect('/lab2/flowers')
 
 @app.route('/lab2/example')
 def example():
