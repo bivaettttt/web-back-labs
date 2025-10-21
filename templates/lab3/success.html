@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+<style>
+    .success-container {
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 30px 0;
+    }
+    
+    .success-icon {
+        font-size: 60px;
+        color: #4a90e2;
+        margin-bottom: 25px;
+    }
+    
+    .success-message {
+        font-size: 20px;
+        color: #2d3748;
+        margin: 25px 0;
+        line-height: 1.5;
+    }
+    
+    .order-price {
+        color: #2d3748;
+        font-weight: bold;
+        font-size: 24px;
+        background: #f7fafc;
+        padding: 10px 20px;
+        border-radius: 6px;
+        display: inline-block;
+        margin: 10px 0;
+    }
+    
+    .back-link {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 30px;
+        background-color: #4a90e2;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+    
+    .back-link:hover {
+        background-color: #357abd;
+        text-decoration: none;
+    }
+    
+    .delivery-info {
+        margin-top: 25px;
+        padding: 20px;
+        background-color: #f0f7ff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        color: #4a5568;
+        font-size: 16px;
+    }
+</style>
+
+<div class="success-container">
+    <div class="success-icon">✓</div>
+    
+    <h1>Спасибо за заказ!</h1>
+    
+    <div class="success-message">
+        Ваш заказ оплачен на сумму 
+        <div class="order-price">{{ price }} рублей</div>
+    </div>
+    
+    <div class="delivery-info">
+        <strong>Ожидайте доставку</strong><br>
+        В течение 15-20 минут
+    </div>
+
+    <a href="/lab3/order" class="back-link">Вернуться на страницу выбора напитка</a>
+</div>
+{% endblock %}

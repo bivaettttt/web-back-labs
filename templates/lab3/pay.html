@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+<style>
+    .payment-container {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .total-price {
+        font-size: 22px;
+        font-weight: bold;
+        color: #2d3748;
+        text-align: center;
+        margin: 25px 0;
+        padding: 20px;
+        background-color: #f7fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+    }
+    
+    .form-group {
+        margin: 20px 0;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #4a5568;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+    }
+    
+    .form-group input:focus {
+        outline: none;
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    }
+    
+    .payment-btn {
+        background-color: #4a90e2;
+        color: white;
+        padding: 12px 35px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        margin-right: 15px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .payment-btn:hover {
+        background-color: #357abd;
+    }
+    
+    .cancel-link {
+        color: #718096;
+        text-decoration: none;
+        padding: 10px 20px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+    
+    .cancel-link:hover {
+        background-color: #f7fafc;
+        color: #4a5568;
+        text-decoration: none;
+    }
+    
+    .button-group {
+        text-align: center;
+        margin-top: 30px;
+    }
+</style>
+
+<div class="payment-container">
+    <h1>Оплата</h1>
+
+    <div class="total-price">
+        Сумма к оплате: {{ price }} руб.
+    </div>
+
+    <form action="/lab3/success">
+        <input type="hidden" name="price" value="{{ price }}">
+        
+        <div class="form-group">
+            <label>Номер банковской карты:</label>
+            <input type="text" name="card" pattern="\d{16}" placeholder="0000000000000000" required>
+        </div>
+
+        <div class="form-group">
+            <label>Имя держателя карты:</label>
+            <input type="text" name="name" placeholder="IVAN IVANOV" required>
+        </div>
+
+        <div class="form-group">
+            <label>Номер CVV:</label>
+            <input type="text" name="cvv" size="3" pattern="\d{3}" placeholder="123" required style="width: 100px;">
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="payment-btn">Оплатить</button>
+            <a href="/lab3/order" class="cancel-link">Отказаться</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

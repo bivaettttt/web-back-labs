@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+<style>
+    .order-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .section-title {
+        color: #4a90e2;
+        border-bottom: 2px solid #4a90e2;
+        padding-bottom: 8px;
+        margin: 30px 0 15px 0;
+        font-weight: bold;
+    }
+    
+    .drink-option, .addon-option {
+        margin: 12px 0;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e1e5e9;
+        transition: all 0.3s ease;
+    }
+    
+    .drink-option:hover, .addon-option:hover {
+        background: #edf2f7;
+        border-color: #4a90e2;
+    }
+    
+    .drink-option label, .addon-option label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        cursor: pointer;
+    }
+    
+    .price-tag {
+        color: #2d3748;
+        font-weight: bold;
+        background: #e2e8f0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    
+    .addon-price {
+        color: #718096;
+        font-size: 0.9em;
+        background: #f7fafc;
+        padding: 2px 6px;
+        border-radius: 3px;
+    }
+    
+    .submit-btn {
+        background-color: #4a90e2;
+        color: white;
+        padding: 12px 35px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 25px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+        background-color: #357abd;
+    }
+    
+    input[type="radio"], input[type="checkbox"] {
+        margin-right: 10px;
+        transform: scale(1.1);
+    }
+</style>
+
+<div class="order-container">
+    <h1>Заказ напитка</h1>
+
+    <form action="/lab3/pay">
+        <div class="section-title">Выберите напиток:</div>
+        
+        <div class="drink-option">
+            <label>
+                <span>
+                    <input type="radio" value="coffee" name="drink" checked>
+                    Кофе
+                </span>
+                <span class="price-tag">120 руб.</span>
+            </label>
+        </div>
+        
+        <div class="drink-option">
+            <label>
+                <span>
+                    <input type="radio" value="black-tea" name="drink">
+                    Чёрный чай
+                </span>
+                <span class="price-tag">80 руб.</span>
+            </label>
+        </div>
+        
+        <div class="drink-option">
+            <label>
+                <span>
+                    <input type="radio" value="green-tea" name="drink">
+                    Зелёный чай
+                </span>
+                <span class="price-tag">70 руб.</span>
+            </label>
+        </div>
+
+        <div class="section-title">Добавки:</div>
+        
+        <div class="addon-option">
+            <label>
+                <span>
+                    <input type="checkbox" name="milk">
+                    Молоко
+                </span>
+                <span class="addon-price">+30 руб.</span>
+            </label>
+        </div>
+        
+        <div class="addon-option">
+            <label>
+                <span>
+                    <input type="checkbox" name="sugar">
+                    Сахар
+                </span>
+                <span class="addon-price">+10 руб.</span>
+            </label>
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" class="submit-btn">Перейти к оплате</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
