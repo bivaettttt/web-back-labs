@@ -5,7 +5,7 @@ lab2 = Blueprint('lab2', __name__)
 
 @lab2.route('/lab2/')
 def lab():
-    return render_template('lab2.html')
+    return render_template('lab2/lab2.html')
 
 
 @lab2.route('/lab2/a')
@@ -31,7 +31,7 @@ def flower(flower_id):
     if flower_id >= len(flower_list):
         abort(404)
     else:
-        return render_template('flower.html', flower=flower_list[flower_id], flower_id=flower_id)
+        return render_template('lab2/flower.html', flower=flower_list[flower_id], flower_id=flower_id)
 
 
 @lab2.route('/lab2/add_flower/<name>/<int:price>')
@@ -47,7 +47,7 @@ def add_flower_empty():
 
 @lab2.route('/lab2/flowers')
 def all_flowers():
-    return render_template('flowers.html', flowers=flower_list)
+    return render_template('lab2/flowers.html', flowers=flower_list)
 
 
 @lab2.route('/lab2/clear_flowers')
@@ -84,7 +84,7 @@ def example():
         {'name': 'мандарины', 'price': 95},
         {'name': 'манго', 'price': 321}
     ]
-    return render_template('example.html',
+    return render_template('lab2/example.html',
                             name = name, num = num, group = group,
                             course = course, fruits = fruits)
 
@@ -92,12 +92,12 @@ def example():
 @lab2.route('/lab2/filters')
 def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
-    return render_template('filter.html', phrase = phrase)
+    return render_template('lab2/filter.html', phrase = phrase)
 
 
 @lab2.route('/lab2/calc/<int:a>/<int:b>')
 def calc(a, b):
-    return render_template('calc.html', a=a, b=b, 
+    return render_template('lab2/calc.html', a=a, b=b, 
                         sum=a+b, 
                         diff=a-b, 
                         mult=a*b, 
@@ -131,33 +131,33 @@ books = [
 
 @lab2.route('/lab2/books')
 def books_list():
-    return render_template('books.html', books = books)
+    return render_template('lab2/books.html', books = books)
 
 
 cars = [
-    {'name': 'Toyota Camry', 'image': 'camry.jpg', 'description': 'Надежный седан бизнес-класса'},
-    {'name': 'Honda Civic', 'image': 'civic.jpg', 'description': 'Компактный автомобиль с отличной экономией'},
-    {'name': 'BMW X5', 'image': 'x5.jpg', 'description': 'Премиальный кроссовер от немецкого бренда'},
-    {'name': 'Mercedes-Benz S-Class', 'image': 'sclass.jpg', 'description': 'Флагманский седан класса люкс'},
-    {'name': 'Audi A4', 'image': 'a4.jpg', 'description': 'Спортивный седан премиум-класса'},
-    {'name': 'Ford Mustang', 'image': 'mustang.jpg', 'description': 'Легендарный американский мускулкар'},
-    {'name': 'Volkswagen Golf', 'image': 'golf.jpg', 'description': 'Компактный хэтчбек с богатой историей'},
-    {'name': 'Hyundai Solaris', 'image': 'solaris.jpg', 'description': 'Популярный седан для города'},
-    {'name': 'Kia Rio', 'image': 'rio.jpg', 'description': 'Стильный и экономичный седан'},
-    {'name': 'Nissan Qashqai', 'image': 'qashqai.jpg', 'description': 'Компактный кроссовер для семьи'},
-    {'name': 'Mercedes-Benz G-Class', 'image': 'gclass.jpg', 'description': 'Легендарный внедорожник класса люкс'},
-    {'name': 'BMW M5', 'image': 'm5.jpg', 'description': 'Высокопроизводительный спортивный седан'},
-    {'name': 'Subaru Outback', 'image': 'outback.jpg', 'description': 'Универсал повышенной проходимости'},
-    {'name': 'Mazda CX-5', 'image': 'cx5.jpg', 'description': 'Стильный кроссовер с отличной управляемостью'},
-    {'name': 'Volvo XC90', 'image': 'xc90.jpg', 'description': 'Безопасный и комфортный SUV'},
-    {'name': 'Porsche 911', 'image': '911.jpg', 'description': 'Легендарный спортивный автомобиль'},
-    {'name': 'Jeep Wrangler', 'image': 'wrangler.jpg', 'description': 'Внедорожник для настоящих приключений'},
-    {'name': 'Tesla Model 3', 'image': 'model3.jpg', 'description': 'Электрический седан будущего'},
-    {'name': 'Land Rover Defender', 'image': 'defender.jpg', 'description': 'Легендарный внедорожник'},
-    {'name': 'Ferrari 488', 'image': 'ferrari.jpg', 'description': 'Итальянский суперкар'}
+    {'name': 'Toyota Camry', 'image': '/lab2/camry.jpg', 'description': 'Надежный седан бизнес-класса'},
+    {'name': 'Honda Civic', 'image': '/lab2/civic.jpg', 'description': 'Компактный автомобиль с отличной экономией'},
+    {'name': 'BMW X5', 'image': '/lab2/x5.jpg', 'description': 'Премиальный кроссовер от немецкого бренда'},
+    {'name': 'Mercedes-Benz S-Class', 'image': '/lab2/sclass.jpg', 'description': 'Флагманский седан класса люкс'},
+    {'name': 'Audi A4', 'image': '/lab2/a4.jpg', 'description': 'Спортивный седан премиум-класса'},
+    {'name': 'Ford Mustang', 'image': '/lab2/mustang.jpg', 'description': 'Легендарный американский мускулкар'},
+    {'name': 'Volkswagen Golf', 'image': '/lab2/golf.jpg', 'description': 'Компактный хэтчбек с богатой историей'},
+    {'name': 'Hyundai Solaris', 'image': '/lab2/solaris.jpg', 'description': 'Популярный седан для города'},
+    {'name': 'Kia Rio', 'image': '/lab2/rio.jpg', 'description': 'Стильный и экономичный седан'},
+    {'name': 'Nissan Qashqai', 'image': '/lab2/qashqai.jpg', 'description': 'Компактный кроссовер для семьи'},
+    {'name': 'Mercedes-Benz G-Class', 'image': '/lab2/gclass.jpg', 'description': 'Легендарный внедорожник класса люкс'},
+    {'name': 'BMW M5', 'image': '/lab2/m5.jpg', 'description': 'Высокопроизводительный спортивный седан'},
+    {'name': 'Subaru Outback', 'image': '/lab2/outback.jpg', 'description': 'Универсал повышенной проходимости'},
+    {'name': 'Mazda CX-5', 'image': '/lab2/cx5.jpg', 'description': 'Стильный кроссовер с отличной управляемостью'},
+    {'name': 'Volvo XC90', 'image': '/lab2/xc90.jpg', 'description': 'Безопасный и комфортный SUV'},
+    {'name': 'Porsche 911', 'image': '/lab2/911.jpg', 'description': 'Легендарный спортивный автомобиль'},
+    {'name': 'Jeep Wrangler', 'image': '/lab2/wrangler.jpg', 'description': 'Внедорожник для настоящих приключений'},
+    {'name': 'Tesla Model 3', 'image': '/lab2/model3.jpg', 'description': 'Электрический седан будущего'},
+    {'name': 'Land Rover Defender', 'image': '/lab2/defender.jpg', 'description': 'Легендарный внедорожник'},
+    {'name': 'Ferrari 488', 'image': '/lab2/ferrari.jpg', 'description': 'Итальянский суперкар'}
 ]
 
 
 @lab2.route('/lab2/cars')
 def cars_list():
-    return render_template('cars.html', cars = cars)
+    return render_template('lab2/cars.html', cars = cars)
