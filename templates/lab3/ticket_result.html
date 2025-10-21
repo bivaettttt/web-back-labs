@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block style %}
+<style>
+    .ticket-container {
+        max-width: 500px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .ticket-header {
+        background: #d40000;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .ticket-header h2 {
+        margin: 0;
+        font-size: 24px;
+    }
+
+    .ticket-body {
+        padding: 25px;
+    }
+
+    .ticket-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .ticket-label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .ticket-value {
+        color: #666;
+        text-align: right;
+    }
+
+    .ticket-type {
+        background: #fff3cd;
+        padding: 8px 12px;
+        border-radius: 4px;
+        border-left: 4px solid #ffc107;
+        margin: 15px 0;
+    }
+
+    .ticket-price {
+        background: #d4edda;
+        padding: 15px;
+        border-radius: 6px;
+        text-align: center;
+        margin-top: 20px;
+        border-left: 4px solid #28a745;
+    }
+
+    .price-amount {
+        font-size: 28px;
+        font-weight: bold;
+        color: #155724;
+    }
+
+    .new-ticket-btn {
+        display: block;
+        width: 100%;
+        background: #d40000;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 20px;
+        transition: background 0.3s;
+    }
+
+    .new-ticket-btn:hover {
+        background: #b30000;
+        text-decoration: none;
+        color: white;
+    }
+
+    .rzd-logo {
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+    <div class="ticket-container">
+        <div class="ticket-header">
+            <div class="rzd-logo">РЖД</div>
+            <h2>Проездной документ</h2>
+            <div>№ {{ range(1000, 9999) | random }}</div>
+        </div>
+
+        <div class="ticket-body">
+            <div class="ticket-row">
+                <div class="ticket-label">Пассажир:</div>
+                <div class="ticket-value">{{ fio }}</div>
+            </div>
+
+            <div class="ticket-type">
+                <strong>{{ ticket_type }}</strong> • Возраст: {{ age }} лет
+            </div>
+
+            <div class="ticket-row">
+                <div class="ticket-label">Маршрут:</div>
+                <div class="ticket-value">{{ departure }} → {{ destination }}</div>
+            </div>
+
+            <div class="ticket-row">
+                <div class="ticket-label">Дата:</div>
+                <div class="ticket-value">{{ date }}</div>
+            </div>
+
+            <div class="ticket-row">
+                <div class="ticket-label">Место:</div>
+                <div class="ticket-value">
+                    {% if shelf == 'lower' %}Нижняя полка
+                    {% elif shelf == 'upper' %}Верхняя полка
+                    {% elif shelf == 'upper_side' %}Верхняя боковая
+                    {% elif shelf == 'lower_side' %}Нижняя боковая
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="ticket-row">
+                <div class="ticket-label">Бельё:</div>
+                <div class="ticket-value">{{ 'Да' if linen == 'yes' else 'Нет' }}</div>
+            </div>
+
+            <div class="ticket-row">
+                <div class="ticket-label">Багаж:</div>
+                <div class="ticket-value">{{ 'Да' if baggage == 'yes' else 'Нет' }}</div>
+            </div>
+
+            <div class="ticket-row">
+                <div class="ticket-label">Страховка:</div>
+                <div class="ticket-value">{{ 'Да' if insurance == 'yes' else 'Нет' }}</div>
+            </div>
+
+            <div class="ticket-price">
+                <div>Итого к оплате:</div>
+                <div class="price-amount">{{ price }} руб.</div>
+            </div>
+
+            <a href="/lab3/ticket" class="new-ticket-btn">Оформить новый билет</a>
+        </div>
+    </div>
+{% endblock %}
