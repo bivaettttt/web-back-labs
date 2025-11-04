@@ -3,33 +3,174 @@
 {% block lab %}Лабораторная работа 4{% endblock %}
 
 {% block main %}
+<style>
+    .login-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 30px;
+        background: linear-gradient(135deg, #fd79a8, #e84393);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
+
+    .welcome-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    .user-info {
+        background: rgba(255, 255, 255, 0.9);
+        color: #2d3436;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .login-btn {
+        flex: 2;
+        padding: 15px;
+        background: #00b894;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .login-btn:hover {
+        background: #00a085;
+        transform: translateY(-2px);
+    }
+
+    .register-btn {
+        flex: 1;
+        padding: 15px;
+        background: #74b9ff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .register-btn:hover {
+        background: #0984e3;
+        transform: translateY(-2px);
+    }
+
+    .logout-btn {
+        padding: 12px 25px;
+        background: #e17055;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .logout-btn:hover {
+        background: #d63031;
+        transform: translateY(-2px);
+    }
+
+    .users-btn {
+        padding: 12px 25px;
+        background: #a29bfe;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        margin-right: 10px;
+    }
+
+    .users-btn:hover {
+        background: #6c5ce7;
+        transform: translateY(-2px);
+    }
+
+    .error-message {
+        background: rgba(255, 255, 255, 0.9);
+        color: #d63031;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
+
+<div class="login-container">
     {% if authorized %}
-        <h1>Добро пожаловать, {{ name }}!</h1>
-        <div>Пол: {{ gender }}</div>
-        <div>
-            <form action="/lab4/logout" method="post">
-                <button>Выход</button>
+        <div class="welcome-title">🎉 Добро пожаловать, {{ name }}!</div>
+        <div class="user-info">
+            <p><strong>Пол:</strong> {{ '👨 Мужской' if gender == 'male' else '👩 Женский' }}</p>
+        </div>
+        <div style="text-align: center;">
+            <a href="/lab4/users" class="users-btn">👥 Список пользователей</a>
+            <form action="/lab4/logout" method="post" style="display: inline;">
+                <button class="logout-btn">🚪 Выход</button>
             </form>
         </div>
     {% else %}
-        <h1>Вход</h1>
-        <h2>Пожалуйста, авторизуйтесь</h2>
+        <div class="welcome-title">🔐 Вход в систему</div>
+        
         <form method="post">
-            <div>
-                <label for="login">Пользователь:</label>
-                <input type="text" id="login" name="login" value="{{ login_value }}">
+            <div class="form-group">
+                <label>Логин:</label>
+                <input type="text" name="login" class="form-input" value="{{ login_value }}">
             </div>
-            <div>
-                <label for="password">Пароль:</label>
-                <input type="password" id="password" name="password">
+            <div class="form-group">
+                <label>Пароль:</label>
+                <input type="password" name="password" class="form-input">
             </div>
+            
             {% if error %}
-                <div style="color: red; font-weight: bold;">{{ error }}</div>
+                <div class="error-message">⚠️ {{ error }}</div>
             {% endif %}
-            <div>
-                <button type="submit">Войти</button>
-                <button type="reset">Отмена</button>
+            
+            <div class="btn-group">
+                <button type="submit" class="login-btn">🚀 Войти</button>
+                <a href="/lab4/register" class="register-btn">📝 Регистрация</a>
             </div>
         </form>
     {% endif %}
+</div>
 {% endblock %}

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 4{% endblock %}
+
+{% block main %}
+<style>
+    .edit-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 30px;
+        background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
+
+    .edit-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .form-select {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: #00b894;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-bottom: 15px;
+    }
+
+    .submit-btn:hover {
+        background: #00a085;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
+    }
+
+    .cancel-btn {
+        width: 100%;
+        padding: 12px;
+        background: #636e72;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .cancel-btn:hover {
+        background: #2d3436;
+    }
+
+    .error-message {
+        background: rgba(255, 255, 255, 0.9);
+        color: #d63031;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
+
+<div class="edit-container">
+    <div class="edit-title">✏️ Редактирование профиля</div>
+
+    <form method="post">
+        <div class="form-group">
+            <label>Логин:</label>
+            <input type="text" name="login" class="form-input" value="{{ user.login }}" required>
+        </div>
+        <div class="form-group">
+            <label>Имя:</label>
+            <input type="text" name="name" class="form-input" value="{{ user.name }}" required>
+        </div>
+        <div class="form-group">
+            <label>Пол:</label>
+            <select name="gender" class="form-select">
+                <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Мужской</option>
+                <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Женский</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Новый пароль (оставьте пустым, если не хотите менять):</label>
+            <input type="password" name="password" class="form-input">
+        </div>
+        <div class="form-group">
+            <label>Подтверждение пароля:</label>
+            <input type="password" name="password_confirm" class="form-input">
+        </div>
+        
+        {% if error %}
+            <div class="error-message">⚠️ {{ error }}</div>
+        {% endif %}
+        
+        <button type="submit" class="submit-btn">💾 Сохранить изменения</button>
+        <a href="/lab4/users">
+            <button type="button" class="cancel-btn">❌ Отмена</button>
+        </a>
+    </form>
+</div>
+{% endblock %}
