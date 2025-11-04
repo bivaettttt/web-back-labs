@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 4{% endblock %}
+
+{% block main %}
+<style>
+    .order-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 30px;
+        background: linear-gradient(135deg, #f5f5dc, #e6e6c9);
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-title {
+        text-align: center;
+        color: #8b4513;
+        margin-bottom: 30px;
+        font-size: 28px;
+    }
+
+    .order-form {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .grain-select, .weight-input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #d2b48c;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #8b4513, #a0522d);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .error-message {
+        background: #ffebee;
+        color: #c62828;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #c62828;
+        margin: 20px 0;
+    }
+
+    .success-message {
+        background: #f0fff0;
+        color: #2e7d32;
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 4px solid #4caf50;
+        margin: 20px 0;
+    }
+
+    .discount-info {
+        background: #fff3cd;
+        color: #856404;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #ffc107;
+        margin: 15px 0;
+    }
+
+    .price-info {
+        background: #e8f4f8;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 25px;
+    }
+</style>
+
+<div class="order-container">
+    <div class="order-title">🌾 Заказ зерна</div>
+    
+    <div class="order-form">
+        <form method="post">
+            <div class="form-group">
+                <label for="grain_type">Выберите зерно:</label>
+                <select id="grain_type" name="grain_type" class="grain-select" required>
+                    <option value="barley">Ячмень - 12 000 руб/т</option>
+                    <option value="oats">Овёс - 8 500 руб/т</option>
+                    <option value="wheat">Пшеница - 9 000 руб/т</option>
+                    <option value="rye">Рожь - 15 000 руб/т</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="weight">Вес (тонны):</label>
+                <input type="number" id="weight" name="weight" 
+                    class="weight-input" 
+                    min="0.1" step="0.1" 
+                    placeholder="Введите вес в тоннах" required>
+            </div>
+            
+            <button type="submit" class="submit-btn">Оформить заказ</button>
+        </form>
+    </div>
+    
+    {% if error %}
+        <div class="error-message">
+            ⚠️ {{ error }}
+        </div>
+    {% endif %}
+    
+    {% if success %}
+        <div class="success-message">
+            <h3>✅ Заказ успешно сформирован</h3>
+            <p>Вы заказали <strong>{{ grain_name }}</strong></p>
+            <p>Вес: <strong>{{ weight }} т</strong></p>
+            <p>Сумма к оплате: <strong>{{ "%.2f"|format(total) }} руб</strong></p>
+            
+            {% if has_discount %}
+                <div class="discount-info">
+                    <p>🎉 Применена скидка 10% за большой объём</p>
+                    <p>Размер скидки: <strong>{{ "%.2f"|format(discount) }} руб</strong></p>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    <div class="price-info">
+        <h4>💰 Цены на зерно:</h4>
+        <ul>
+            <li>Ячмень: 12 000 руб/т</li>
+            <li>Овёс: 8 500 руб/т</li>
+            <li>Пшеница: 9 000 руб/т</li>
+            <li>Рожь: 15 000 руб/т</li>
+        </ul>
+        <p style="margin-top: 10px; color: #666;">
+            💡 <strong>Скидка 10%</strong> при заказе более 10 тонн
+        </p>
+    </div>
+</div>
+{% endblock %}
