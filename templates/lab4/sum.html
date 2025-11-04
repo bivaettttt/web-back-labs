@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block lab %}Суммирование чисел{% endblock %}
+
+{% block main %}
+    <h1>Суммирование чисел</h1>
+
+    <form method="POST">
+        <div>
+            <label for="x1">Первое число:</label>
+            <input type="number" id="x1" name="x1">
+        </div>
+        <div>
+            <label for="x2">Второе число:</label>
+            <input type="number" id="x2" name="x2">
+        </div>
+        <button type="submit">Сложить</button>
+    </form>
+
+    {% if result %}
+        <div style="margin-top: 20px;">
+            <p>{{ x1 }} + {{ x2 }} = {{ result }}</p>
+        </div>
+    {% endif %}
+
+    <p>
+        <a href="/lab4">Вернуться к списку операций</a>
+    </p>
+{% endblock %}
