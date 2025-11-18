@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+<style>
+    :root {
+        --lab5-blue-main: #2563eb;
+        --lab5-blue-light: #e3f0ff;
+        --lab5-blue-soft: #f3f6ff;
+        --lab5-text-main: #111827;
+        --lab5-text-muted: #6b7280;
+        --lab5-border: #d1d5db;
+        --lab5-radius-lg: 18px;
+        --lab5-radius-md: 12px;
+        --lab5-transition: 0.18s ease;
+    }
+
+    .lab5-list-page {
+        max-width: 900px;
+        margin: 32px auto 40px;
+        padding: 0 16px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .lab5-list-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--lab5-text-main);
+        margin-bottom: 26px;
+        text-align: center;
+    }
+
+    .lab5-empty {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border-radius: var(--lab5-radius-lg);
+        background: var(--lab5-blue-light);
+        border: 1px solid var(--lab5-border);
+        color: var(--lab5-text-muted);
+        font-size: 15px;
+        text-align: center;
+        box-shadow: 0 6px 16px rgba(59,130,246,0.12);
+    }
+
+    .lab5-article-card {
+        background: #ffffff;
+        border-radius: var(--lab5-radius-lg);
+        padding: 20px 22px 20px;
+        border: 1px solid var(--lab5-border);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.06);
+        margin-bottom: 20px;
+        transition:
+            transform var(--lab5-transition),
+            box-shadow var(--lab5-transition),
+            border-color var(--lab5-transition);
+    }
+
+    .lab5-article-card:hover {
+        transform: translateY(-2px);
+        border-color: #93c5fd;
+        box-shadow: 0 12px 28px rgba(59,130,246,0.15);
+    }
+
+    .lab5-article-title-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+
+    .lab5-article-title {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--lab5-text-main);
+    }
+
+    .lab5-badge-fav {
+        padding: 2px 9px;
+        border-radius: 999px;
+        background: #fef3c7;
+        border: 1px solid #facc15;
+        font-size: 11px;
+        font-weight: 500;
+        color: #92400e;
+    }
+
+    .lab5-article-meta {
+        margin: 0 0 10px;
+        font-size: 13px;
+        color: var(--lab5-text-muted);
+    }
+
+    .lab5-article-text {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.55;
+        color: var(--lab5-text-muted);
+        white-space: pre-line;
+        padding-left: 14px;
+        border-left: 3px solid var(--lab5-blue-main);
+    }
+
+    .lab5-back-btn {
+        display: inline-block;
+        margin-bottom: 16px;
+        padding: 8px 14px;
+        background: #ffffff;
+        border: 1px solid var(--lab5-border);
+        border-radius: var(--lab5-radius-md);
+        font-size: 14px;
+        color: var(--lab5-text-main);
+        text-decoration: none;
+        transition:
+            background var(--lab5-transition),
+            border-color var(--lab5-transition),
+            color var(--lab5-transition),
+            transform var(--lab5-transition);
+    }
+
+    .lab5-back-btn:hover {
+        background: var(--lab5-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="lab5-list-page">
+    <h1 class="lab5-list-title">Публичные статьи</h1>
+
+    {% if articles|length == 0 %}
+        <div class="lab5-empty">Публичных статей пока нет.</div>
+    {% endif %}
+
+    {% for article in articles %}
+    <div class="lab5-article-card">
+        <div class="lab5-article-title-row">
+            <h2 class="lab5-article-title">{{ article['title'] }}</h2>
+            {% if article['is_favorite'] %}
+                <span class="lab5-badge-fav">★ Любимая</span>
+            {% endif %}
+        </div>
+
+        <p class="lab5-article-meta">
+            Автор: {{ article['real_name'] or article['login'] }} ({{ article['login'] }})
+        </p>
+
+        <p class="lab5-article-text">{{ article['article_text'] }}</p>
+    </div>
+    {% endfor %}
+</div>
+<a href="/lab5/" class="lab5-back-btn">← Вернуться в меню</a>
+{% endblock %}

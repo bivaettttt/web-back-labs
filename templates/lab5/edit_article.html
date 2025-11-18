@@ -84,6 +84,27 @@
         min-height: 160px;
     }
 
+    .lab5-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 18px;
+        margin-bottom: 8px;
+        font-size: 13px;
+        color: var(--lab5-text-muted);
+    }
+
+    .lab5-checkbox {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+    }
+
+    .lab5-checkbox input {
+        width: 14px;
+        height: 14px;
+    }
+
     .lab5-submit {
         width: 100%;
         margin-top: 8px;
@@ -106,13 +127,36 @@
     .lab5-submit:active {
         transform: translateY(0);
     }
+
+    .lab5-back-btn {
+        display: inline-block;
+        margin-bottom: 16px;
+        padding: 8px 14px;
+        background: #ffffff;
+        border: 1px solid var(--lab5-border);
+        border-radius: var(--lab5-radius-md);
+        font-size: 14px;
+        color: var(--lab5-text-main);
+        text-decoration: none;
+        transition:
+            background var(--lab5-transition),
+            border-color var(--lab5-transition),
+            color var(--lab5-transition),
+            transform var(--lab5-transition);
+    }
+
+    .lab5-back-btn:hover {
+        background: var(--lab5-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
 </style>
 
 <div class="lab5-form-page">
     <h1 class="lab5-form-title">Редактирование статьи</h1>
 
     <div class="lab5-form-card">
-
         {% if error %}
         <div class="lab5-error">{{ error }}</div>
         {% endif %}
@@ -120,8 +164,7 @@
         <form method="post">
             <div class="lab5-field">
                 <label>Название статьи</label>
-                <input class="lab5-input" type="text" name="title"
-                    maxlength="50"
+                <input class="lab5-input" type="text" name="title" maxlength="50"
                     value="{{ title or '' }}">
             </div>
 
@@ -130,8 +173,23 @@
                 <textarea class="lab5-textarea" name="article_text">{{ article_text or '' }}</textarea>
             </div>
 
+            <div class="lab5-options">
+                <label class="lab5-checkbox">
+                    <input type="checkbox" name="is_favorite"
+                        {% if is_favorite %}checked{% endif %}>
+                    <span>Любимая статья</span>
+                </label>
+
+                <label class="lab5-checkbox">
+                    <input type="checkbox" name="is_public"
+                        {% if is_public %}checked{% endif %}>
+                    <span>Публичная статья</span>
+                </label>
+            </div>
+
             <button class="lab5-submit" type="submit">Сохранить изменения</button>
         </form>
     </div>
 </div>
+<a href="/lab5/" class="lab5-back-btn">← Вернуться в меню</a>
 {% endblock %}

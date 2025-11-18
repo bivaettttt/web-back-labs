@@ -82,10 +82,97 @@
     .lab5-article-actions {
         margin-top: 14px;
         display: flex;
-        justify-content: flex-end;
-        gap: 8px;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
     }
 
+    .lab5-article-actions-left,
+    .lab5-article-actions-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    /* сердечко любимой */
+    .lab5-fav-form {
+        margin: 0;
+    }
+
+    .lab5-fav-btn {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 6px;
+        border-radius: 999px;
+        transition:
+            background var(--lab5-transition),
+            transform var(--lab5-transition),
+            color var(--lab5-transition);
+        color: #9ca3af; /* серое сердце по умолчанию */
+    }
+
+    .lab5-fav-btn:hover {
+        background: #f3f4f6;
+        transform: translateY(-1px);
+    }
+
+    .lab5-fav-btn.is-active {
+        color: #f97373; /* бледно-красное/розовое */
+    }
+
+    .lab5-fav-btn.is-active:hover {
+        background: #fee2e2;
+    }
+
+    /* кнопка публикации */
+    .lab5-publish-form {
+        margin: 0;
+    }
+
+    .lab5-publish-btn {
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: var(--lab5-radius-md);
+        border: 1px solid var(--lab5-border);
+        background: #f9fafb;
+        color: var(--lab5-text-main);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition:
+            background var(--lab5-transition),
+            border-color var(--lab5-transition),
+            color var(--lab5-transition),
+            transform var(--lab5-transition);
+    }
+
+    .lab5-publish-btn:hover {
+        background: var(--lab5-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .lab5-publish-btn.is-active {
+        background: #ecfdf3;
+        border-color: #86efac;
+        color: #166534;
+    }
+
+    .lab5-publish-btn.is-active:hover {
+        background: #dcfce7;
+        border-color: #4ade80;
+    }
+
+    /* edit / delete */
     .lab5-article-edit,
     .lab5-article-delete {
         text-decoration: none;
@@ -125,6 +212,30 @@
         color: #991b1b;
         transform: translateY(-1px);
     }
+
+    .lab5-back-btn {
+        display: inline-block;
+        margin-bottom: 16px;
+        padding: 8px 14px;
+        background: #ffffff;
+        border: 1px solid var(--lab5-border);
+        border-radius: var(--lab5-radius-md);
+        font-size: 14px;
+        color: var(--lab5-text-main);
+        text-decoration: none;
+        transition:
+            background var(--lab5-transition),
+            border-color var(--lab5-transition),
+            color var(--lab5-transition),
+            transform var(--lab5-transition);
+    }
+
+    .lab5-back-btn:hover {
+        background: var(--lab5-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
 </style>
 
 <div class="lab5-list-page">
@@ -140,18 +251,46 @@
         <p class="lab5-article-text">{{ article['article_text'] }}</p>
 
         <div class="lab5-article-actions">
-            <a class="lab5-article-edit" href="/lab5/edit/{{ article['id'] }}">
-                ✏️ <span>Редактировать</span>
-            </a>
+            <div class="lab5-article-actions-left">
+                <!-- любимая статья -->
+                <form class="lab5-fav-form" method="post" action="/lab5/toggle_favorite/{{ article['id'] }}">
+                    <button
+                        class="lab5-fav-btn {% if article['is_favorite'] %}is-active{% endif %}"
+                        type="submit"
+                        title="Добавить в любимые / убрать из любимых">
+                        ❤
+                    </button>
+                </form>
 
-            <form method="post" action="/lab5/delete/{{ article['id'] }}" style="margin: 0;">
-                <button class="lab5-article-delete" type="submit"
-                        onclick="return confirm('Удалить эту статью?');">
-                    🗑️ <span>Удалить</span>
-                </button>
-            </form>
+                <!-- публикация -->
+                <form class="lab5-publish-form" method="post" action="/lab5/toggle_public/{{ article['id'] }}">
+                    <button
+                        class="lab5-publish-btn {% if article['is_public'] %}is-active{% endif %}"
+                        type="submit">
+                        {% if article['is_public'] %}
+                            ✅ <span>Опубликована</span>
+                        {% else %}
+                            📢 <span>Опубликовать</span>
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+
+            <div class="lab5-article-actions-right">
+                <a class="lab5-article-edit" href="/lab5/edit/{{ article['id'] }}">
+                    ✏️ <span>Редактировать</span>
+                </a>
+
+                <form method="post" action="/lab5/delete/{{ article['id'] }}" style="margin: 0;">
+                    <button class="lab5-article-delete" type="submit"
+                            onclick="return confirm('Удалить эту статью?');">
+                        🗑️ <span>Удалить</span>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
     {% endfor %}
 </div>
+<a href="/lab5/" class="lab5-back-btn">← Вернуться в меню</a>
 {% endblock %}

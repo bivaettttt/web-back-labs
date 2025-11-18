@@ -259,10 +259,14 @@
     </header>
 
     <nav class="lab5-nav">
-        <a href="/lab5/list">📚 <span>Список статей</span></a>
-        <a href="/lab5/create">✏️ <span>Создать статью</span></a>
+        <!-- всегда доступно -->
+        <a href="/lab5/public">🌍 <span>Публичные статьи</span></a>
 
         {% if login %}
+            <a href="/lab5/list">📚 <span>Мои статьи</span></a>
+            <a href="/lab5/create">✏️ <span>Создать статью</span></a>
+            <a href="/lab5/users">👥 <span>Пользователи</span></a>
+            <a href="/lab5/profile">⚙️ <span>Профиль</span></a>
             <a href="/lab5/logout">🚪 <span>Выйти</span></a>
         {% else %}
             <a href="/lab5/login">🔑 <span>Войти</span></a>
