@@ -3,11 +3,72 @@
 {% block lab %}Лабораторная работа 5{% endblock %}
 
 {% block main %}
-    <h1>Регистрация успешна!</h1>
+<style>
+    :root {
+        --lab5-blue-main: #2563eb;
+        --lab5-blue-light: #e3f0ff;
+        --lab5-text-main: #111827;
+        --lab5-text-muted: #6b7280;
+        --lab5-border: #d1d5db;
+        --lab5-radius-lg: 18px;
+        --lab5-radius-md: 12px;
+        --lab5-transition: 0.18s ease;
+    }
 
-    <p>Поздравляем, {{ login }}! Ваш аккаунт был создан.</p>
+    .lab5-msg-page {
+        max-width: 420px;
+        margin: 36px auto 40px;
+        padding: 0 12px;
+        text-align: center;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-    <p>
-        <a href="/lab5">Перейти к базе знаний</a>
-    </p>
+    .lab5-msg-card {
+        background: #ffffff;
+        border-radius: var(--lab5-radius-lg);
+        padding: 26px 24px 28px;
+        border: 1px solid var(--lab5-border);
+        box-shadow: 0 8px 22px rgba(37, 99, 235, 0.08);
+    }
+
+    .lab5-msg-card h1 {
+        margin: 0 0 12px;
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--lab5-text-main);
+    }
+
+    .lab5-msg-card p {
+        margin: 0 0 14px;
+        font-size: 14px;
+        color: var(--lab5-text-muted);
+    }
+
+    .lab5-link-btn {
+        display: inline-block;
+        margin-top: 6px;
+        background: var(--lab5-blue-main);
+        color: white;
+        padding: 9px 18px;
+        border-radius: var(--lab5-radius-md);
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background var(--lab5-transition), transform var(--lab5-transition);
+    }
+
+    .lab5-link-btn:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="lab5-msg-page">
+    <div class="lab5-msg-card">
+        <h1>Регистрация успешна!</h1>
+        <p>Поздравляем, {{ login }}! Ваш аккаунт был создан.</p>
+
+        <a class="lab5-link-btn" href="/lab5">Перейти к базе знаний</a>
+    </div>
+</div>
 {% endblock %}

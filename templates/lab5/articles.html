@@ -3,12 +3,155 @@
 {% block lab %}Лабораторная работа 5{% endblock %}
 
 {% block main %}
+<style>
+    :root {
+        --lab5-blue-main: #2563eb;
+        --lab5-blue-light: #e3f0ff;
+        --lab5-text-main: #111827;
+        --lab5-text-muted: #6b7280;
+        --lab5-border: #d1d5db;
+        --lab5-radius-lg: 18px;
+        --lab5-radius-md: 12px;
+        --lab5-transition: 0.18s ease;
+    }
 
-    <h1>Статьи</h1>
+    .lab5-list-page {
+        max-width: 820px;
+        margin: 32px auto 40px;
+        padding: 0 16px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .lab5-list-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--lab5-text-main);
+        margin-bottom: 26px;
+        text-align: center;
+    }
+
+    .lab5-empty {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border-radius: var(--lab5-radius-lg);
+        background: var(--lab5-blue-light);
+        border: 1px solid var(--lab5-border);
+        color: var(--lab5-text-muted);
+        font-size: 15px;
+        text-align: center;
+        box-shadow: 0 6px 16px rgba(59,130,246,0.12);
+    }
+
+    .lab5-article-card {
+        background: #ffffff;
+        border-radius: var(--lab5-radius-lg);
+        padding: 20px 22px 22px;
+        border: 1px solid var(--lab5-border);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.06);
+        margin-bottom: 20px;
+        transition:
+            transform var(--lab5-transition),
+            box-shadow var(--lab5-transition),
+            border-color var(--lab5-transition);
+    }
+
+    .lab5-article-card:hover {
+        transform: translateY(-2px);
+        border-color: #93c5fd;
+        box-shadow: 0 12px 28px rgba(59,130,246,0.15);
+    }
+
+    .lab5-article-title {
+        margin: 0 0 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--lab5-text-main);
+    }
+
+    .lab5-article-text {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.55;
+        color: var(--lab5-text-muted);
+        white-space: pre-line;
+        padding-left: 14px;
+        border-left: 3px solid var(--lab5-blue-main);
+    }
+
+    /* блок действий */
+    .lab5-article-actions {
+        margin-top: 14px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .lab5-article-edit,
+    .lab5-article-delete {
+        text-decoration: none;
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: var(--lab5-radius-md);
+        border: 1px solid var(--lab5-border);
+        background: #f9fafb;
+        color: var(--lab5-text-main);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition:
+            background var(--lab5-transition),
+            border-color var(--lab5-transition),
+            color var(--lab5-transition),
+            transform var(--lab5-transition);
+    }
+
+    .lab5-article-edit:hover {
+        background: var(--lab5-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .lab5-article-delete {
+        background: #fef2f2;
+        border-color: #fecaca;
+        color: #b91c1c;
+    }
+
+    .lab5-article-delete:hover {
+        background: #fee2e2;
+        border-color: #fca5a5;
+        color: #991b1b;
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="lab5-list-page">
+    <h1 class="lab5-list-title">Статьи</h1>
+
+    {% if articles|length == 0 %}
+        <div class="lab5-empty">У вас пока нет созданных статей.</div>
+    {% endif %}
 
     {% for article in articles %}
-        <h2>{{ article['title'] }}</h2>
-        <blockquote>{{ article['article_text'] }}</blockquote>
-    {% endfor %}
+    <div class="lab5-article-card">
+        <h2 class="lab5-article-title">{{ article['title'] }}</h2>
+        <p class="lab5-article-text">{{ article['article_text'] }}</p>
 
+        <div class="lab5-article-actions">
+            <a class="lab5-article-edit" href="/lab5/edit/{{ article['id'] }}">
+                ✏️ <span>Редактировать</span>
+            </a>
+
+            <form method="post" action="/lab5/delete/{{ article['id'] }}" style="margin: 0;">
+                <button class="lab5-article-delete" type="submit"
+                        onclick="return confirm('Удалить эту статью?');">
+                    🗑️ <span>Удалить</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

@@ -3,24 +3,127 @@
 {% block lab %}Лабораторная работа 5{% endblock %}
 
 {% block main %}
-    <h1>Регистрация</h1>
+<style>
+    :root {
+        --lab5-blue-main: #2563eb;
+        --lab5-blue-light: #e3f0ff;
+        --lab5-text-main: #111827;
+        --lab5-text-muted: #6b7280;
+        --lab5-border: #d1d5db;
+        --lab5-radius-lg: 18px;
+        --lab5-radius-md: 12px;
+        --lab5-transition: 0.18s ease;
+    }
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    .lab5-auth-page {
+        max-width: 420px;
+        margin: 32px auto 40px;
+        padding: 0 12px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-    <form action="/lab5/register" method="post">
-        <div>
-            <label>
-                Логин: <input type="text" name="login">
-            </label>
-        </div>
+    /* Заголовок */
+    .lab5-auth-title {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--lab5-text-main);
+        margin-bottom: 20px;
+    }
 
-        <div>
-            <label>
-                Пароль: <input type="password" name="password">
-            </label>
-        </div>
-        <button type="submit">Зарегистрироваться</button>
-    </form>
+    /* Карточка формы */
+    .lab5-form-card {
+        background: #ffffff;
+        border-radius: var(--lab5-radius-lg);
+        padding: 26px 24px 28px;
+        border: 1px solid var(--lab5-border);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
+    }
+
+    .lab5-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 18px;
+        font-size: 14px;
+        color: var(--lab5-text-main);
+    }
+
+    .lab5-field label {
+        font-weight: 500;
+    }
+
+    .lab5-input {
+        padding: 9px 11px;
+        border-radius: var(--lab5-radius-md);
+        border: 1px solid var(--lab5-border);
+        background: #ffffff;
+        font-size: 14px;
+        transition: border-color var(--lab5-transition), background var(--lab5-transition);
+    }
+
+    .lab5-input:focus {
+        outline: none;
+        border-color: var(--lab5-blue-main);
+        background: var(--lab5-blue-light);
+    }
+
+    .lab5-submit {
+        width: 100%;
+        margin-top: 8px;
+        padding: 10px 0;
+        border: none;
+        border-radius: var(--lab5-radius-md);
+        background: var(--lab5-blue-main);
+        color: white;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background var(--lab5-transition), transform var(--lab5-transition);
+    }
+
+    .lab5-submit:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .lab5-submit:active {
+        transform: translateY(0);
+    }
+
+    /* Ошибка */
+    .lab5-error {
+        padding: 10px 12px;
+        border-radius: var(--lab5-radius-md);
+        background: #ffe6e6;
+        color: #9b1c1c;
+        border: 1px solid #ef9a9a;
+        margin-bottom: 18px;
+        font-size: 14px;
+    }
+</style>
+
+<div class="lab5-auth-page">
+    <h1 class="lab5-auth-title">Регистрация</h1>
+
+    <div class="lab5-form-card">
+        {% if error %}
+        <div class="lab5-error">{{ error }}</div>
+        {% endif %}
+
+        <form action="/lab5/register" method="post">
+            <div class="lab5-field">
+                <label>Логин</label>
+                <input class="lab5-input" type="text" name="login">
+            </div>
+
+            <div class="lab5-field">
+                <label>Пароль</label>
+                <input class="lab5-input" type="password" name="password">
+            </div>
+
+            <button class="lab5-submit" type="submit">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

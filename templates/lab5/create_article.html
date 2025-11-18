@@ -3,22 +3,135 @@
 {% block lab %}Лабораторная работа 5{% endblock %}
 
 {% block main %}
-    <h1>Создание статьи</h1>
+<style>
+    :root {
+        --lab5-blue-main: #2563eb;
+        --lab5-blue-light: #e3f0ff;
+        --lab5-text-main: #111827;
+        --lab5-text-muted: #6b7280;
+        --lab5-border: #d1d5db;
+        --lab5-radius-lg: 18px;
+        --lab5-radius-md: 12px;
+        --lab5-transition: 0.18s ease;
+    }
 
-    <form method = "post">
-        <div>
-            <label>
-                Название статьи:
-                <input type = "text" maxlength = "50" name = "title">
-            </label>
-        </div>
+    .lab5-form-page {
+        max-width: 680px;
+        margin: 36px auto 40px;
+        padding: 0 12px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-        <div>
-            <textarea name = "article_text"></textarea>
-        </div>
+    .lab5-form-title {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--lab5-text-main);
+        margin-bottom: 24px;
+    }
 
-        <div>
-            <button type = "submit">Готово</button>
-        </div>
-    </form>
+    .lab5-form-card {
+        background: #ffffff;
+        border-radius: var(--lab5-radius-lg);
+        padding: 26px 24px 28px;
+        border: 1px solid var(--lab5-border);
+        box-shadow: 0 8px 22px rgba(37, 99, 235, 0.08);
+    }
+
+    .lab5-error {
+        background: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fca5a5;
+        padding: 10px 12px;
+        border-radius: var(--lab5-radius-md);
+        margin-bottom: 18px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .lab5-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: var(--lab5-text-main);
+    }
+
+    .lab5-field label {
+        font-weight: 500;
+    }
+
+    .lab5-input,
+    .lab5-textarea {
+        padding: 9px 11px;
+        border-radius: var(--lab5-radius-md);
+        border: 1px solid var(--lab5-border);
+        background: #ffffff;
+        font-size: 14px;
+        transition: border-color var(--lab5-transition), background var(--lab5-transition);
+    }
+
+    .lab5-input:focus,
+    .lab5-textarea:focus {
+        outline: none;
+        border-color: var(--lab5-blue-main);
+        background: var(--lab5-blue-light);
+    }
+
+    .lab5-textarea {
+        resize: vertical;
+        min-height: 160px;
+    }
+
+    .lab5-submit {
+        width: 100%;
+        margin-top: 8px;
+        padding: 10px 0;
+        border: none;
+        border-radius: var(--lab5-radius-md);
+        background: var(--lab5-blue-main);
+        color: white;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background var(--lab5-transition), transform var(--lab5-transition);
+    }
+
+    .lab5-submit:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .lab5-submit:active {
+        transform: translateY(0);
+    }
+</style>
+
+<div class="lab5-form-page">
+    <h1 class="lab5-form-title">Создание статьи</h1>
+
+    <div class="lab5-form-card">
+
+        {% if error %}
+        <div class="lab5-error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+            <div class="lab5-field">
+                <label>Название статьи</label>
+                <input class="lab5-input" type="text" name="title"
+                    maxlength="50"
+                    value="{{ title or '' }}">
+            </div>
+
+            <div class="lab5-field">
+                <label>Текст статьи</label>
+                <textarea class="lab5-textarea" name="article_text">{{ article_text or '' }}</textarea>
+            </div>
+
+            <button class="lab5-submit" type="submit">Готово</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

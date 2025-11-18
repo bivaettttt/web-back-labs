@@ -138,8 +138,16 @@ def create():
     if request.method == 'GET':
         return render_template('lab5/create_article.html')
 
-    title = request.form.get('title')
-    article_text = request.form.get('article_text')
+    title = request.form.get('title', '').strip()
+    article_text = request.form.get('article_text', '').strip()
+
+    if not title or not article_text:
+        return render_template(
+            'lab5/create_article.html',
+            error='Тема и текст статьи не могут быть пустыми',
+            title=title,
+            article_text=article_text
+        )
 
     conn, cur = db_connect()
 
@@ -158,3 +166,116 @@ def create():
 
     db_close(conn, cur)
     return redirect('/lab5')
+
+
+@lab5.route('/lab5/edit/<int:article_id>', methods=['GET', 'POST'])
+def edit(article_id):
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    conn, cur = db_connect()
+
+    # Находим текущего пользователя
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
+    else:
+        cur.execute("SELECT id FROM users WHERE login=?;", (login,))
+    user_row = cur.fetchone()
+
+    if not user_row:
+        db_close(conn, cur)
+        return redirect('/lab5/')
+
+    user_id = user_row["id"]
+
+    # Находим статью этого пользователя
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT * FROM articles WHERE id=%s AND user_id=%s;", (article_id, user_id))
+    else:
+        cur.execute("SELECT * FROM articles WHERE id=? AND user_id=?;", (article_id, user_id))
+    article = cur.fetchone()
+
+    if not article:
+        db_close(conn, cur)
+        return redirect('/lab5/list')
+
+    if request.method == 'GET':
+        # Показать форму с уже существующими данными
+        db_close(conn, cur)
+        return render_template(
+            'lab5/edit_article.html',
+            title=article['title'],
+            article_text=article['article_text']
+        )
+
+    # POST: сохраняем изменения
+    title = request.form.get('title', '').strip()
+    article_text = request.form.get('article_text', '').strip()
+
+    if not title or not article_text:
+        # Возвращаем форму с ошибкой и введёнными данными
+        db_close(conn, cur)
+        return render_template(
+            'lab5/edit_article.html',
+            error='Тема и текст статьи не могут быть пустыми',
+            title=title,
+            article_text=article_text
+        )
+
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute(
+            "UPDATE articles SET title=%s, article_text=%s WHERE id=%s AND user_id=%s;",
+            (title, article_text, article_id, user_id)
+        )
+    else:
+        cur.execute(
+            "UPDATE articles SET title=?, article_text=? WHERE id=? AND user_id=?;",
+            (title, article_text, article_id, user_id)
+        )
+
+    db_close(conn, cur)
+    return redirect('/lab5/list')
+
+
+@lab5.route('/lab5/delete/<int:article_id>', methods=['POST'])
+def delete(article_id):
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    conn, cur = db_connect()
+
+    # Находим текущего пользователя
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
+    else:
+        cur.execute("SELECT id FROM users WHERE login=?;", (login,))
+    user_row = cur.fetchone()
+
+    if not user_row:
+        db_close(conn, cur)
+        return redirect('/lab5/')
+
+    user_id = user_row["id"]
+
+    # Удаляем ТОЛЬКО свою статью
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute(
+            "DELETE FROM articles WHERE id=%s AND user_id=%s;",
+            (article_id, user_id)
+        )
+    else:
+        cur.execute(
+            "DELETE FROM articles WHERE id=? AND user_id=?;",
+            (article_id, user_id)
+        )
+
+    db_close(conn, cur)
+    return redirect('/lab5/list')
+
+
+@lab5.route('/lab5/logout')
+def logout():
+    session.pop('login', None)
+    return redirect('/lab5/')
