@@ -2,6 +2,80 @@
 
 {% block lab %}Лабораторная работа 6{% endblock %}
 
+{% block style %}
+    /* общий список */
+    #office-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0 10px;
+    }
+
+    /* одна строка списка */
+    .office-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 14px;
+        margin-bottom: 6px;
+        border-radius: 10px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        font-size: 15px;
+    }
+
+    .office-info {
+        font-weight: 500;
+    }
+
+    .office-status-free {
+        color: #16a34a; /* зелёный */
+        font-weight: 600;
+    }
+
+    .office-status-busy {
+        color: #dc2626; /* красный */
+        font-weight: 600;
+    }
+
+    .office-actions button {
+        margin-left: 8px;
+        padding: 5px 12px;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .btn-book {
+        background: #3b82f6;
+        color: #ffffff;
+    }
+
+    .btn-book:hover {
+        background: #2563eb;
+    }
+
+    .btn-cancel {
+        background: #f97373;
+        color: #ffffff;
+    }
+
+    .btn-cancel:hover {
+        background: #ef4444;
+    }
+
+    #total-price {
+        margin-top: 8px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    #total-price span {
+        color: #2563eb;
+    }
+{% endblock %}
+
 {% block script %}
 <script>
 const currentUser = "{{ login or '' }}";
@@ -11,61 +85,79 @@ function getOfficeList() {
     const json = {
         'jsonrpc': '2.0',
         'method': 'info',
-        'id': Math.round(Math.random()*1000)
+        'id': Math.round(Math.random() * 1000)
     };
     fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(json)
     })
-    .then(function(response) {
-        return response.json()
-    })
-    .then(function(data) {
-        const office_list = data.result;
-        const ul = document.getElementById('office-list');
-        ul.innerHTML = '';
+        .then(function (response) {
+            return response.json()
+        })
+        .then(function (data) {
+            const office_list = data.result;
+            const ul = document.getElementById('office-list');
+            ul.innerHTML = '';
 
-        let total = 0;  // тут будем копить сумму аренды текущего пользователя
+            let total = 0;
 
-        for (let i = 0; i < office_list.length; i++) {
-            const office = office_list[i];
-            const li = document.createElement('li');
+            for (let i = 0; i < office_list.length; i++) {
+                const office = office_list[i];
 
-            // теперь выводим номер + цену + статус
-            li.innerText = `${office.number} (цена: ${office.price}₽): ${office.tenant || 'свободен'}`;
+                const li = document.createElement('li');
+                li.className = 'office-item';
 
-            // Кнопка резервирования
-            const bookingButton = document.createElement('button');
-            bookingButton.innerText = 'зарезервировать';
-            bookingButton.onclick = function() { booking(office.number) };
-            li.appendChild(bookingButton);
+                // блок с текстом
+                const info = document.createElement('div');
+                info.className = 'office-info';
 
-            // Кнопка освобождения (только если офис арендован)
-            if (office.tenant) {
-                const cancellationButton = document.createElement('button');
-                cancellationButton.innerText = 'освободить';
-                cancellationButton.onclick = function() { cancellation(office.number) };
-                cancellationButton.style.marginLeft = '10px';
-                li.appendChild(cancellationButton);
+                const statusSpan = document.createElement('span');
+                statusSpan.className = office.tenant ? 'office-status-busy' : 'office-status-free';
+                statusSpan.textContent = office.tenant || 'свободен';
+
+                info.textContent = `${office.number} (цена: ${office.price}₽): `;
+                info.appendChild(statusSpan);
+
+                // блок с кнопками
+                const actions = document.createElement('div');
+                actions.className = 'office-actions';
+
+                const bookingButton = document.createElement('button');
+                bookingButton.innerText = 'зарезервировать';
+                bookingButton.className = 'btn-book';
+                bookingButton.onclick = function () {
+                    booking(office.number)
+                };
+                actions.appendChild(bookingButton);
+
+                if (office.tenant) {
+                    const cancellationButton = document.createElement('button');
+                    cancellationButton.innerText = 'освободить';
+                    cancellationButton.className = 'btn-cancel';
+                    cancellationButton.onclick = function () {
+                        cancellation(office.number)
+                    };
+                    actions.appendChild(cancellationButton);
+                }
+
+                // считаем сумму аренды текущего пользователя
+                if (office.tenant === currentUser) {
+                    total += office.price;
+                }
+
+                li.appendChild(info);
+                li.appendChild(actions);
+                ul.appendChild(li);
             }
 
-            // если офис арендован ТЕКУЩИМ пользователем — добавляем его цену в сумму
-            if (office.tenant === currentUser) {
-                total += office.price;
+            const totalEl = document.getElementById('total-price');
+            if (total > 0) {
+                totalEl.innerHTML = `Общая стоимость вашей аренды: <span>${total}₽</span>`;
+            } else {
+                totalEl.textContent = '';
             }
-
-            ul.appendChild(li);
-        }
-
-        // выводим общую стоимость аренды
-        const totalEl = document.getElementById('total-price');
-        if (total > 0) {
-            totalEl.textContent = `Общая стоимость вашей аренды: ${total}₽`;
-        } else {
-            totalEl.textContent = '';
-        }
-    });
+        });
 }
 
 function booking(officeNumber) {
