@@ -142,7 +142,7 @@ function getOfficeList() {
                 }
 
                 // считаем сумму аренды текущего пользователя
-                if (office.tenant === currentUser) {
+                if (currentUser && office.tenant === currentUser) {
                     total += office.price;
                 }
 
