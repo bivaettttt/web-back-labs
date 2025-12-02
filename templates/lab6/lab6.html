@@ -4,6 +4,8 @@
 
 {% block script %}
 <script>
+const currentUser = "{{ login or '' }}";
+
 function getOfficeList() {
     const url = '/lab6/json-rpc-api/';
     const json = {
@@ -23,26 +25,45 @@ function getOfficeList() {
         const office_list = data.result;
         const ul = document.getElementById('office-list');
         ul.innerHTML = '';
-        for(let i = 0; i < office_list.length; i++) {
+
+        let total = 0;  // тут будем копить сумму аренды текущего пользователя
+
+        for (let i = 0; i < office_list.length; i++) {
             const office = office_list[i];
             const li = document.createElement('li');
-            li.innerText = `${office.number}: ${office.tenant || 'свободен'}`;
+
+            // теперь выводим номер + цену + статус
+            li.innerText = `${office.number} (цена: ${office.price}₽): ${office.tenant || 'свободен'}`;
 
             // Кнопка резервирования
             const bookingButton = document.createElement('button');
             bookingButton.innerText = 'зарезервировать';
-            bookingButton.onclick = function() {booking(office.number)};
+            bookingButton.onclick = function() { booking(office.number) };
             li.appendChild(bookingButton);
 
             // Кнопка освобождения (только если офис арендован)
             if (office.tenant) {
                 const cancellationButton = document.createElement('button');
                 cancellationButton.innerText = 'освободить';
-                cancellationButton.onclick = function() {cancellation(office.number)};
+                cancellationButton.onclick = function() { cancellation(office.number) };
                 cancellationButton.style.marginLeft = '10px';
                 li.appendChild(cancellationButton);
             }
+
+            // если офис арендован ТЕКУЩИМ пользователем — добавляем его цену в сумму
+            if (office.tenant === currentUser) {
+                total += office.price;
+            }
+
             ul.appendChild(li);
+        }
+
+        // выводим общую стоимость аренды
+        const totalEl = document.getElementById('total-price');
+        if (total > 0) {
+            totalEl.textContent = `Общая стоимость вашей аренды: ${total}₽`;
+        } else {
+            totalEl.textContent = '';
         }
     });
 }
@@ -133,4 +154,5 @@ document.addEventListener('DOMContentLoaded', function() {
 {% block main %}
     <h1>Список кабинетов</h1>
     <ul id="office-list"></ul>
+    <p id="total-price"></p>
 {% endblock %}
