@@ -32,6 +32,14 @@ function fillFilmList() {
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Удалить';
 
+                deleteButton.onclick = function() {
+                    fetch('/lab7/rest-api/films/' + i, {
+                        method: 'DELETE'
+                    }).then(function() {
+                        fillFilmList();
+                    });
+                };
+
                 tdActions.appendChild(editButton);
                 tdActions.appendChild(deleteButton);
 
