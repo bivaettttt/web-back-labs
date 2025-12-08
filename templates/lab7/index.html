@@ -2,8 +2,46 @@
 
 {% block lab %}Лабораторная работа 7{% endblock %}
 
-{% block script %}
+{% block style %}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+button {
+    margin: 0 4px;
+}
 {% endblock %}
 
 {% block main %}
+<h1>Фильмы</h1>
+
+<button id="add-film-btn">Добавить фильм</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>Название (рус.)</th>
+            <th>Название (ориг.)</th>
+            <th>Год</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody id="film-table-body">
+    </tbody>
+</table>
+
+<script src="{{ url_for('static', filename='lab7/main.js') }}"></script>
+<script>
+    fillFilmList();
+</script>
 {% endblock %}
