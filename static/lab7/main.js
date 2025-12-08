@@ -76,6 +76,8 @@ function deleteFilm(id, titleRu) {
 function showModal() {
     editingFilmId = null;
     clearModal();
+    clearErrorMessage();
+
     const modal = document.querySelector('.modal');
     if (modal) {
         modal.style.display = 'flex';
@@ -96,6 +98,14 @@ function clearModal() {
     document.getElementById('film-description').value = '';
 }
 
+function clearErrorMessage() {
+    const errorDiv = document.getElementById('error-message');
+    if (errorDiv) {
+        errorDiv.textContent = '';
+        errorDiv.style.display = 'none';
+    }
+}
+
 /* ----- добавление / редактирование ----- */
 
 function editFilm(id) {
@@ -110,6 +120,7 @@ function editFilm(id) {
             document.getElementById('film-description').value = film.description || '';
 
             editingFilmId = id;
+            clearErrorMessage();
 
             const modal = document.querySelector('.modal');
             if (modal) {
@@ -137,27 +148,41 @@ function sendFilm() {
         description: description
     };
 
+    let url;
+    let method;
+
     if (editingFilmId === null) {
-        fetch('/lab7/rest-api/films/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(film)
-        }).then(function () {
-            hideModal();
-            fillFilmList();
-        });
+        url = '/lab7/rest-api/films/';
+        method = 'POST';
     } else {
-        fetch('/lab7/rest-api/films/' + editingFilmId, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(film)
-        }).then(function () {
+        url = '/lab7/rest-api/films/' + editingFilmId;
+        method = 'PUT';
+    }
+
+    fetch(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(film)
+    })
+    .then(function(response) {
+        if (response.ok) {
+            return {};
+        }
+        return response.json();
+    })
+    .then(function(data) {
+        if (data.description) {
+            const errorDiv = document.getElementById('error-message');
+            if (errorDiv) {
+                errorDiv.textContent = data.description;
+                errorDiv.style.display = 'block';
+            }
+        } else {
+            clearErrorMessage();
             hideModal();
             fillFilmList();
-        });
-    }
+        }
+    });
 }

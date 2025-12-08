@@ -70,15 +70,23 @@ def del_film(id):
     return '', 204
 
 
+@lab7.route('/lab7/rest-api/films/', methods=['POST'])
+def add_film():
+    film = request.get_json()
+
+    if not film.get('description'):
+        return jsonify({'description': 'Описание не должно быть пустым'}), 400
+
+    films.append(film)
+    return jsonify(film), 201
+
+
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['PUT'])
 def put_film(id):
     film = request.get_json()
+
+    if not film.get('description'):
+        return jsonify({'description': 'Описание не должно быть пустым'}), 400
+
     films[id] = film
     return films[id]
-
-
-@lab7.route('/lab7/rest-api/films/', methods=['POST'])
-def add_film():
-    film = request.json
-    films.append(film)
-    return jsonify(film), 201

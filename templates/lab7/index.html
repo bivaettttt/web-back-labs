@@ -21,14 +21,13 @@ button {
     margin: 0 4px;
 }
 
-/* модалка по методичке */
 .modal {
     position: fixed;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    display: none;              /* по умолчанию скрыта */
+    display: none;
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.3);
@@ -61,6 +60,13 @@ button {
     text-align: right;
     margin-top: 10px;
 }
+
+/* сообщение об ошибке */
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+    display: none;
+}
 {% endblock %}
 
 {% block main %}
@@ -77,13 +83,15 @@ button {
             <th>Действия</th>
         </tr>
     </thead>
-    <tbody id="film-table-body">
-    </tbody>
+    <tbody id="film-table-body"></tbody>
 </table>
 
 <div class="modal">
     <div class="modal-content">
-        <h2>Новый фильм</h2>
+        <h2>Фильм</h2>
+
+        <!-- div для вывода текста ошибки -->
+        <div id="error-message" class="error-message"></div>
 
         <div class="modal-row">
             <label for="film-title-ru">Название (русское)</label>
