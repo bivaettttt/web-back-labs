@@ -6,19 +6,56 @@
 table {
     border-collapse: collapse;
     width: 100%;
+    margin-top: 16px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 th, td {
-    border: 1px solid #ccc;
-    padding: 6px 10px;
+    border: 1px solid #e5e7eb;
+    padding: 8px 12px;
 }
 
 th {
-    background-color: #f0f0f0;
+    background-color: #f3f4f6;
+    text-align: left;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+tr:hover {
+    background-color: #e5f2ff;
 }
 
 button {
-    margin: 0 4px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: #f3f4f6;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #e5e7eb;
+}
+
+button:active {
+    background-color: #d1d5db;
+}
+
+button.primary {
+    background-color: #2563eb;
+    color: #ffffff;
+    border-color: #1d4ed8;
+}
+
+button.primary:hover {
+    background-color: #1d4ed8;
 }
 
 .modal {
@@ -30,30 +67,40 @@ button {
     display: none;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(15, 23, 42, 0.4);
 }
 
 .modal-content {
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 16px;
-    border-radius: 8px;
-    min-width: 320px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    min-width: 340px;
+    max-width: 480px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
 }
 
 .modal-row {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .modal-row label {
     display: block;
     margin-bottom: 4px;
+    font-size: 14px;
 }
 
 .modal-row input,
 .modal-row textarea {
     width: 100%;
     box-sizing: border-box;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+.modal-row textarea {
+    resize: vertical;
 }
 
 .modal-buttons {
@@ -61,24 +108,29 @@ button {
     margin-top: 10px;
 }
 
-/* сообщение об ошибке */
 .error-message {
-    color: red;
+    color: #dc2626;
     margin-bottom: 10px;
     display: none;
+    font-size: 14px;
+}
+
+.original-title {
+    font-style: italic;
+    color: #6b7280;
 }
 {% endblock %}
 
 {% block main %}
 <h1>Фильмы</h1>
 
-<button onclick="showModal()">Добавить фильм</button>
+<button class="primary" onclick="showModal()">Добавить фильм</button>
 
 <table>
     <thead>
         <tr>
-            <th>Название (рус.)</th>
             <th>Название (ориг.)</th>
+            <th>Название (рус.)</th>
             <th>Год</th>
             <th>Действия</th>
         </tr>
@@ -90,7 +142,6 @@ button {
     <div class="modal-content">
         <h2>Фильм</h2>
 
-        <!-- div для вывода текста ошибки -->
         <div id="error-message" class="error-message"></div>
 
         <div class="modal-row">
@@ -114,7 +165,7 @@ button {
         </div>
 
         <div class="modal-buttons">
-            <button onclick="sendFilm()">ОК</button>
+            <button class="primary" onclick="sendFilm()">ОК</button>
             <button onclick="hideModal()">Отмена</button>
         </div>
     </div>

@@ -77,6 +77,9 @@ def add_film():
     if not film.get('description'):
         return jsonify({'description': 'Описание не должно быть пустым'}), 400
 
+    if not film.get('title') and film.get('title_ru'):
+        film['title'] = film['title_ru']
+
     films.append(film)
     return jsonify(film), 201
 
@@ -87,6 +90,9 @@ def put_film(id):
 
     if not film.get('description'):
         return jsonify({'description': 'Описание не должно быть пустым'}), 400
+
+    if not film.get('title') and film.get('title_ru'):
+        film['title'] = film['title_ru']
 
     films[id] = film
     return films[id]

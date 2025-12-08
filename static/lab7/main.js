@@ -14,19 +14,21 @@ function fillFilmList() {
 
                 const tr = document.createElement('tr');
 
+                const tdTitleOriginal = document.createElement('td');
                 const tdTitleRu = document.createElement('td');
-                const tdTitle = document.createElement('td');
                 const tdYear = document.createElement('td');
                 const tdActions = document.createElement('td');
 
-                tdTitleRu.textContent = film.title_ru;
-
-                if (film.title === film.title_ru) {
-                    tdTitle.textContent = '';
+                if (film.title && film.title !== film.title_ru) {
+                    tdTitleOriginal.innerHTML =
+                        '<span class="original-title">(' +
+                        film.title +
+                        ')</span>';
                 } else {
-                    tdTitle.textContent = film.title;
+                    tdTitleOriginal.textContent = '';
                 }
 
+                tdTitleRu.textContent = film.title_ru;
                 tdYear.textContent = film.year;
 
                 const editButton = document.createElement('button');
@@ -44,8 +46,8 @@ function fillFilmList() {
                 tdActions.appendChild(editButton);
                 tdActions.appendChild(deleteButton);
 
+                tr.appendChild(tdTitleOriginal);
                 tr.appendChild(tdTitleRu);
-                tr.appendChild(tdTitle);
                 tr.appendChild(tdYear);
                 tr.appendChild(tdActions);
 
@@ -70,8 +72,6 @@ function deleteFilm(id, titleRu) {
         fillFilmList();
     });
 }
-
-/* ----- модальное окно ----- */
 
 function showModal() {
     editingFilmId = null;
@@ -105,8 +105,6 @@ function clearErrorMessage() {
         errorDiv.style.display = 'none';
     }
 }
-
-/* ----- добавление / редактирование ----- */
 
 function editFilm(id) {
     fetch('/lab7/rest-api/films/' + id)
