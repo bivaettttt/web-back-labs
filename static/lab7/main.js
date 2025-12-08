@@ -1,3 +1,5 @@
+let editingFilmId = null;
+
 function fillFilmList() {
     fetch('/lab7/rest-api/films/')
         .then(function(response) {
@@ -29,7 +31,9 @@ function fillFilmList() {
 
                 const editButton = document.createElement('button');
                 editButton.textContent = 'Редактировать';
-                // обработчик редактирования будет в пункте 11
+                editButton.onclick = function () {
+                    editFilm(i);
+                };
 
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Удалить';
@@ -67,9 +71,10 @@ function deleteFilm(id, titleRu) {
     });
 }
 
-/* ----- модальное окно для добавления фильма (п.10) ----- */
+/* ----- модальное окно ----- */
 
 function showModal() {
+    editingFilmId = null;
     clearModal();
     const modal = document.querySelector('.modal');
     if (modal) {
@@ -91,6 +96,28 @@ function clearModal() {
     document.getElementById('film-description').value = '';
 }
 
+/* ----- добавление / редактирование ----- */
+
+function editFilm(id) {
+    fetch('/lab7/rest-api/films/' + id)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(film) {
+            document.getElementById('film-title-ru').value = film.title_ru;
+            document.getElementById('film-title').value = film.title;
+            document.getElementById('film-year').value = film.year;
+            document.getElementById('film-description').value = film.description || '';
+
+            editingFilmId = id;
+
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        });
+}
+
 function sendFilm() {
     const titleRu = document.getElementById('film-title-ru').value;
     let title = document.getElementById('film-title').value;
@@ -110,14 +137,27 @@ function sendFilm() {
         description: description
     };
 
-    fetch('/lab7/rest-api/films/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(film)
-    }).then(function () {
-        hideModal();
-        fillFilmList();
-    });
+    if (editingFilmId === null) {
+        fetch('/lab7/rest-api/films/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(film)
+        }).then(function () {
+            hideModal();
+            fillFilmList();
+        });
+    } else {
+        fetch('/lab7/rest-api/films/' + editingFilmId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(film)
+        }).then(function () {
+            hideModal();
+            fillFilmList();
+        });
+    }
 }
