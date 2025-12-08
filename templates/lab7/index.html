@@ -20,12 +20,53 @@ th {
 button {
     margin: 0 4px;
 }
+
+/* модалка по методичке */
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;              /* по умолчанию скрыта */
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    min-width: 320px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.modal-row {
+    margin-bottom: 8px;
+}
+
+.modal-row label {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.modal-row input,
+.modal-row textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-buttons {
+    text-align: right;
+    margin-top: 10px;
+}
 {% endblock %}
 
 {% block main %}
 <h1>Фильмы</h1>
 
-<button id="add-film-btn">Добавить фильм</button>
+<button onclick="showModal()">Добавить фильм</button>
 
 <table>
     <thead>
@@ -39,6 +80,37 @@ button {
     <tbody id="film-table-body">
     </tbody>
 </table>
+
+<div class="modal">
+    <div class="modal-content">
+        <h2>Новый фильм</h2>
+
+        <div class="modal-row">
+            <label for="film-title-ru">Название (русское)</label>
+            <input id="film-title-ru" type="text">
+        </div>
+
+        <div class="modal-row">
+            <label for="film-title">Название (оригинальное)</label>
+            <input id="film-title" type="text">
+        </div>
+
+        <div class="modal-row">
+            <label for="film-year">Год</label>
+            <input id="film-year" type="number">
+        </div>
+
+        <div class="modal-row">
+            <label for="film-description">Описание</label>
+            <textarea id="film-description" rows="4"></textarea>
+        </div>
+
+        <div class="modal-buttons">
+            <button onclick="sendFilm()">ОК</button>
+            <button onclick="hideModal()">Отмена</button>
+        </div>
+    </div>
+</div>
 
 <script src="{{ url_for('static', filename='lab7/main.js') }}"></script>
 <script>
