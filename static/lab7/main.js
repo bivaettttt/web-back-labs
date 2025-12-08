@@ -11,6 +11,7 @@ function fillFilmList() {
 
             for (let i = 0; i < films.length; i++) {
                 const film = films[i];
+                const filmId = film.id;
 
                 const tr = document.createElement('tr');
 
@@ -34,13 +35,13 @@ function fillFilmList() {
                 const editButton = document.createElement('button');
                 editButton.textContent = 'Редактировать';
                 editButton.onclick = function () {
-                    editFilm(i);
+                    editFilm(filmId);
                 };
 
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Удалить';
                 deleteButton.onclick = function () {
-                    deleteFilm(i, film.title_ru);
+                    deleteFilm(filmId, film.title_ru);
                 };
 
                 tdActions.appendChild(editButton);
@@ -117,7 +118,7 @@ function editFilm(id) {
             document.getElementById('film-year').value = film.year;
             document.getElementById('film-description').value = film.description || '';
 
-            editingFilmId = id;
+            editingFilmId = film.id;
             clearErrorMessage();
 
             const modal = document.querySelector('.modal');
@@ -165,16 +166,20 @@ function sendFilm() {
         body: JSON.stringify(film)
     })
     .then(function(response) {
-        if (response.ok) {
-            return {};
-        }
-        return response.json();
+        return response.json().then(function(data) {
+            return { ok: response.ok, data: data };
+        });
     })
-    .then(function(data) {
-        if (data.description) {
+    .then(function(result) {
+        if (!result.ok) {
+            const data = result.data || {};
+            let message = data.description;
+            if (!message) {
+                message = Object.values(data).join('; ');
+            }
             const errorDiv = document.getElementById('error-message');
             if (errorDiv) {
-                errorDiv.textContent = data.description;
+                errorDiv.textContent = message;
                 errorDiv.style.display = 'block';
             }
         } else {
