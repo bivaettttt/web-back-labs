@@ -62,7 +62,7 @@ initial_films = [
 
 
 def init_films_table():
-    """Создаём таблицу films и заполняем её начальными данными, если она пустая."""
+    #Создаём таблицу films и заполняем её начальными данными, если она пустая.
     conn, cur = db_connect()
     try:
         cur.execute('''
@@ -87,7 +87,7 @@ def init_films_table():
             use_sqlite = isinstance(conn, sqlite3.Connection)
             ph = '?' if use_sqlite else '%s'
 
-            # задаём id явно (1..N), чтобы не было NULL в Postgres
+            # задаём id явнo, чтобы не было NULL в Postgres
             for i, f in enumerate(initial_films, start=1):
                 cur.execute(
                     f'INSERT INTO films (id, title, title_ru, year, description) '
@@ -101,7 +101,7 @@ def init_films_table():
 
 
 def row_to_film(row):
-    """Преобразование строки БД в словарь фильма (sqlite / postgres)."""
+    #Преобразование строки БД в словарь фильма (sqlite / postgres).
     if isinstance(row, dict) or hasattr(row, 'keys'):
         return {
             'id': row['id'],
@@ -175,7 +175,7 @@ def del_film(id):
 
 
 def validate_film_data(film):
-    """Проверки для полей фильма по заданию 15."""
+    #Проверки для полей фильма по заданию
     title_ru = film.get('title_ru', '').strip()
     title = film.get('title', '').strip()
     year_raw = film.get('year', '')
