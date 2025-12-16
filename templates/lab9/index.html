@@ -2,8 +2,208 @@
 
 {% block lab %}Лабораторная работа 9{% endblock %}
 
-{% block script %}{% endblock %}
+{% block style %}
+    #field {
+        position: relative;
+        height: 78vh;
+        border: 1px solid #ddd;
+        overflow: hidden;
+        border-radius: 12px;
+        margin-top: 10px;
+    }
+
+    .box {
+        position: absolute;
+        width: 90px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .box.opened {
+        opacity: 0.35;
+        cursor: default;
+        filter: grayscale(100%);
+    }
+
+    .topbar {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin: 10px 0 8px;
+        flex-wrap: wrap;
+    }
+
+    .counter {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.6);
+    }
+
+    .btn-santa {
+        background: linear-gradient(135deg, #c62828, #8e0000);
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 25px;
+        font-size: 14pt;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.25s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    }
+
+    .btn-santa:hover {
+        background: linear-gradient(135deg, #e53935, #b71c1c);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+    }
+
+    .btn-santa:active {
+        transform: translateY(0);
+        box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    }
+
+    #modal.hidden { display: none; }
+
+    #modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+    }
+
+    #modal-card {
+        background: #fff;
+        padding: 16px 18px;
+        width: min(560px, 94vw);
+        border-radius: 12px;
+    }
+
+    #modal-text {
+        margin-bottom: 12px;
+        font-size: 14pt;
+        line-height: 1.35;
+    }
+
+    #modal-gift {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 12px;
+    }
+
+    #modal-close {
+        padding: 8px 14px;
+        cursor: pointer;
+    }
+{% endblock %}
+
+{% block script %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("modal");
+        const modalText = document.getElementById("modal-text");
+        const modalGift = document.getElementById("modal-gift");
+        const modalClose = document.getElementById("modal-close");
+
+        const remainingEl = document.getElementById("remaining");
+        const openedEl = document.getElementById("opened-count");
+
+        function openModal(text, giftUrl) {
+        modalText.textContent = text;
+        modalGift.style.display = giftUrl ? "block" : "none";
+        modalGift.src = giftUrl || "";
+        modal.classList.remove("hidden");
+        }
+
+        function closeModal() {
+        modal.classList.add("hidden");
+        modalGift.src = "";
+        }
+
+        modalClose.addEventListener("click", closeModal);
+        modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+        });
+
+        function setCounters(remaining, opened) {
+        if (typeof remaining === "number") remainingEl.textContent = remaining;
+        if (typeof opened === "number") openedEl.textContent = opened;
+        }
+
+        document.querySelectorAll(".box").forEach((img) => {
+        img.addEventListener("click", async () => {
+            if (img.classList.contains("opened")) {
+            openModal("Эта коробка уже открыта.", null);
+            return;
+            }
+
+            const id = Number(img.dataset.id);
+
+            const resp = await fetch("/lab9/api/open", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({id})
+            });
+
+            const data = await resp.json();
+
+            // обновим счётчики всегда, если пришли
+            setCounters(data.remaining, data.opened_count);
+
+            if (!data.ok) {
+            // ВАЖНО: не помечаем коробку opened, если она не открылась
+            openModal(data.message || "Нельзя открыть коробку.", null);
+            return;
+            }
+
+            img.classList.add("opened");
+            openModal(data.greeting, data.gift);
+        });
+        });
+    });
+</script>
+{% endblock %}
 
 {% block main %}
-    <h1>Поздравления</h1>
+    <h1>Поздравления с Новым годом</h1>
+
+    <div class="topbar">
+        <div class="counter">
+        Открыто: <b id="opened-count">{{ opened_count }}</b> / {{ max_open }}
+        &nbsp;|&nbsp;
+        Осталось закрытых: <b id="remaining">{{ remaining }}</b>
+        </div>
+
+        {% if authorized %}
+        <form action="/lab9/reset" method="post">
+            <button type="submit" class="btn-santa">🎅 Дед Мороз</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <div id="field">
+        {% for pos in positions %}
+        {% set i = loop.index0 %}
+        <img
+            class="box {% if i in opened %}opened{% endif %}"
+            data-id="{{ i }}"
+            src="{{ url_for('static', filename=assignment[i].box_img) }}"
+            style="top: {{ pos.top }}%; left: {{ pos.left }}%;"
+            alt="box"
+        />
+        {% endfor %}
+    </div>
+
+    <div id="modal" class="hidden">
+        <div id="modal-card">
+        <div id="modal-text"></div>
+        <img id="modal-gift" alt="gift" />
+        <button id="modal-close">Закрыть</button>
+        </div>
+    </div>
 {% endblock %}

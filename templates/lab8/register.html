@@ -4,45 +4,80 @@
 
 {% block main %}
 <style>
-.lab8-wrap{
-    max-width: 560px;
-    margin: 24px auto;
-    padding: 18px;
-    border: 1px solid #d1d5db;
-    border-radius: 18px;
-    background: #ffffff;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-}
-.lab8-title{ margin: 0 0 14px; font-size: 22px; color: #111827; }
-.lab8-field{ margin-bottom: 12px; }
-.lab8-field label{ display:block; font-size: 13px; color:#111827; margin-bottom: 6px; font-weight: 600; }
-.lab8-field input{
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 12px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-.lab8-btn{
-    display:inline-block;
-    padding: 10px 14px;
-    border-radius: 999px;
-    border: 1px solid #d1d5db;
-    background: #2563eb;
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-}
-.lab8-error{
-    margin: 0 0 12px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 1px solid #fecaca;
-    background: #fef2f2;
-    color: #991b1b;
-    font-size: 13px;
-}
+    :root {
+    --lab8-blue-main: #2563eb;
+    --lab8-blue-light: #e3f0ff;
+    --lab8-text-main: #111827;
+    --lab8-text-muted: #6b7280;
+    --lab8-border: #d1d5db;
+    --lab8-radius-lg: 18px;
+    --lab8-radius-md: 12px;
+    --lab8-transition: 0.18s ease;
+    }
+
+    .lab8-wrap{
+        max-width: 560px;
+        margin: 24px auto;
+        padding: 18px;
+        border: 1px solid #d1d5db;
+        border-radius: 18px;
+        background: #ffffff;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    .lab8-title{ margin: 0 0 14px; font-size: 22px; color: #111827; }
+    .lab8-field{ margin-bottom: 12px; }
+    .lab8-field label{ display:block; font-size: 13px; color:#111827; margin-bottom: 6px; font-weight: 600; }
+    .lab8-field input{
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 12px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    .lab8-btn{
+        display:inline-block;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid #d1d5db;
+        background: #2563eb;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .lab8-error{
+        margin: 0 0 12px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid #fecaca;
+        background: #fef2f2;
+        color: #991b1b;
+        font-size: 13px;
+    }
+
+    .lab8-back-btn {
+        display: inline-block;
+        margin-top: 16px;
+        padding: 8px 14px;
+        background: #ffffff;
+        border: 1px solid var(--lab8-border);
+        border-radius: var(--lab8-radius-md);
+        font-size: 14px;
+        color: var(--lab8-text-main);
+        text-decoration: none;
+        transition:
+            background var(--lab8-transition),
+            border-color var(--lab8-transition),
+            color var(--lab8-transition),
+            transform var(--lab8-transition);
+    }
+
+    .lab8-back-btn:hover {
+        background: var(--lab8-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
 </style>
 
 <div class="lab8-wrap">
@@ -68,4 +103,6 @@
         <button class="lab8-btn" type="submit">Зарегистрироваться</button>
     </form>
 </div>
+
+<a href="/lab8/" class="lab8-back-btn">← Вернуться в меню</a>
 {% endblock %}
