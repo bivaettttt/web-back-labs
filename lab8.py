@@ -3,6 +3,7 @@ from db import db
 from db.models import users, articles
 from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
+from sqlalchemy import or_
 
 lab8 = Blueprint("lab8", __name__, template_folder="templates")
 
@@ -72,8 +73,20 @@ def login():
 @lab8.route('/lab8/articles/')
 @login_required
 def article_list():
-    all_articles = articles.query.all()
-    return render_template('lab8/articles.html', articles=all_articles)
+    q = (request.args.get('q') or '').strip()
+
+    query = articles.query.filter_by(login_id=current_user.id)
+
+    if q:
+        query = query.filter(
+            or_(
+                articles.title.ilike(f'%{q}%'),
+                articles.article_text.ilike(f'%{q}%')
+            )
+        )
+
+    all_articles = query.order_by(articles.id.desc()).all()
+    return render_template('lab8/articles.html', articles=all_articles, q=q)
 
 
 @lab8.route('/lab8/logout')
@@ -150,5 +163,50 @@ def delete_article(article_id):
         abort(403)
 
     db.session.delete(article)
+    db.session.commit()
+    return redirect('/lab8/articles/')
+
+
+@lab8.route('/lab8/public/')
+def public_articles():
+    q = (request.args.get('q') or '').strip()
+
+    query = articles.query.filter_by(is_public=True)
+
+    if q:
+        query = query.filter(
+            or_(
+                articles.title.ilike(f'%{q}%'),
+                articles.article_text.ilike(f'%{q}%')
+            )
+        )
+
+    public_list = query.order_by(articles.id.desc()).all()
+    return render_template('lab8/public.html', articles=public_list, q=q)
+
+
+@lab8.route('/lab8/toggle_public/<int:article_id>', methods=['POST'])
+@login_required
+def toggle_public(article_id):
+    article = articles.query.get_or_404(article_id)
+
+    # только автор может менять публикацию
+    if article.login_id != current_user.id:
+        abort(403)
+
+    article.is_public = not bool(article.is_public)
+    db.session.commit()
+    return redirect('/lab8/articles/')
+
+
+@lab8.route('/lab8/toggle_favorite/<int:article_id>', methods=['POST'])
+@login_required
+def toggle_favorite(article_id):
+    article = articles.query.get_or_404(article_id)
+
+    if article.login_id != current_user.id:
+        abort(403)
+
+    article.is_favorite = not bool(article.is_favorite)
     db.session.commit()
     return redirect('/lab8/articles/')

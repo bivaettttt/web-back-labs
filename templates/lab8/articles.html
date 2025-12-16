@@ -239,6 +239,59 @@
         color: #1d4ed8;
         transform: translateY(-1px);
     }
+
+    .lab8-search {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 0 0 18px;
+    }
+
+    .lab8-search-input {
+        flex: 1 1 260px;
+        padding: 9px 11px;
+        border-radius: var(--lab8-radius-md);
+        border: 1px solid var(--lab8-border);
+        font-size: 14px;
+    }
+
+    .lab8-search-input:focus {
+        outline: none;
+        border-color: var(--lab8-blue-main);
+        background: var(--lab8-blue-light);
+    }
+
+    .lab8-search-btn {
+        padding: 9px 14px;
+        border: none;
+        border-radius: var(--lab8-radius-md);
+        background: var(--lab8-blue-main);
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background var(--lab8-transition), transform var(--lab8-transition);
+    }
+
+    .lab8-search-btn:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .lab8-search-reset {
+        padding: 9px 12px;
+        border-radius: var(--lab8-radius-md);
+        border: 1px solid var(--lab8-border);
+        text-decoration: none;
+        color: var(--lab8-text-main);
+        background: #fff;
+        font-size: 14px;
+    }
+
+    .lab8-search-reset:hover {
+        background: var(--lab8-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+    }
 </style>
 
 <div class="lab8-list-page">
@@ -248,6 +301,14 @@
         <a class="lab8-action-link" href="/lab8/create">➕ <span>Создать статью</span></a>
         <a class="lab8-action-link" href="/lab8/public">🌍 <span>Публичные статьи</span></a>
     </div>
+
+    <form class="lab8-search" method="get" action="/lab8/articles/">
+        <input class="lab8-search-input" type="text" name="q" placeholder="Поиск по моим статьям..." value="{{ q or '' }}">
+        <button class="lab8-search-btn" type="submit">🔎 Найти</button>
+        {% if q %}
+            <a class="lab8-search-reset" href="/lab8/articles/">Сброс</a>
+        {% endif %}
+    </form>
 
     {% if articles|length == 0 %}
         <div class="lab8-empty">Пока нет статей.</div>
