@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+<style>
+    :root {
+        --lab8-blue-main: #2563eb;
+        --lab8-blue-light: #e3f0ff;
+        --lab8-blue-soft: #f3f6ff;
+        --lab8-text-main: #111827;
+        --lab8-text-muted: #6b7280;
+        --lab8-border: #d1d5db;
+        --lab8-radius-lg: 18px;
+        --lab8-radius-md: 12px;
+        --lab8-transition: 0.18s ease;
+    }
+
+    .lab8-page {
+        max-width: 1100px;
+        margin: 24px auto 40px;
+        padding: 0 16px;
+        box-sizing: border-box;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .lab8-hero {
+        background: linear-gradient(120deg, #2563eb, #60a5fa);
+        border-radius: var(--lab8-radius-lg);
+        padding: 18px 20px;
+        color: #f9fafb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        box-shadow: 0 12px 26px rgba(37, 99, 235, 0.25);
+    }
+
+    .lab8-hero-left {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .lab8-hero-kicker {
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        opacity: 0.95;
+    }
+
+    .lab8-hero-title {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    .lab8-hero-sub {
+        margin: 0;
+        font-size: 13px;
+        opacity: 0.95;
+        max-width: 520px;
+    }
+
+    .lab8-hero-user {
+        padding: 7px 13px;
+        border-radius: 999px;
+        background: #ffffff;
+        color: #111827;
+        font-size: 13px;
+        border: 1px solid rgba(209,213,219,0.9);
+        white-space: nowrap;
+    }
+
+    .lab8-hero-user span {
+        font-weight: 500;
+    }
+
+    .lab8-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 16px 0 22px;
+    }
+
+    .lab8-nav a {
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--lab8-text-main);
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--lab8-border);
+        background: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition:
+            background var(--lab8-transition),
+            border-color var(--lab8-transition),
+            color var(--lab8-transition),
+            transform var(--lab8-transition);
+    }
+
+    .lab8-nav a:hover {
+        background: var(--lab8-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .lab8-main {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(0, 1.05fr);
+        gap: 22px;
+        align-items: flex-start;
+    }
+
+    .lab8-main-card {
+        border-radius: var(--lab8-radius-lg);
+        border: 1px solid var(--lab8-border);
+        background: #ffffff;
+        padding: 18px 18px 16px;
+    }
+
+    .lab8-main-title {
+        margin: 0 0 10px;
+        font-size: 24px;
+        color: var(--lab8-text-main);
+    }
+
+    .lab8-text {
+        margin: 0;
+        font-size: 14px;
+        color: var(--lab8-text-muted);
+        line-height: 1.6;
+    }
+
+    .lab8-side-card {
+        border-radius: var(--lab8-radius-lg);
+        border: 1px solid var(--lab8-border);
+        background: var(--lab8-blue-soft);
+        padding: 14px 14px 12px;
+    }
+
+    .lab8-side-title {
+        margin: 0 0 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--lab8-text-main);
+    }
+
+    .lab8-feature-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .lab8-feature {
+        border-radius: var(--lab8-radius-md);
+        border: 1px solid #e5e7eb;
+        background: #ffffff;
+        padding: 10px 10px 9px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 8px 10px;
+        align-items: flex-start;
+        transition:
+            background var(--lab8-transition),
+            border-color var(--lab8-transition),
+            transform var(--lab8-transition),
+            box-shadow var(--lab8-transition);
+    }
+
+    .lab8-feature:hover {
+        background: var(--lab8-blue-light);
+        border-color: #bfdbfe;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(148,163,184,0.35);
+    }
+
+    .lab8-feature-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 999px;
+        background: var(--lab8-blue-soft);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+    }
+
+    .lab8-feature-title {
+        margin: 1px 0 2px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--lab8-text-main);
+    }
+
+    .lab8-feature-text {
+        grid-column: 2 / 3;
+        margin: 0;
+        font-size: 13px;
+        color: var(--lab8-text-muted);
+        line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+        .lab8-main {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .lab8-hero {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .lab8-hero-user {
+            align-self: flex-end;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .lab8-nav a {
+            flex: 1 1 auto;
+            justify-content: center;
+        }
+
+        .lab8-hero-title {
+            font-size: 20px;
+        }
+
+        .lab8-main-title {
+            font-size: 20px;
+        }
+    }
+</style>
+
+<div class="lab8-page">
+    <header class="lab8-hero">
+        <div class="lab8-hero-left">
+            <div class="lab8-hero-kicker">Лабораторная работа 8</div>
+            <h1 class="lab8-hero-title">База знаний (ORM + Flask)</h1>
+            <p class="lab8-hero-sub">
+                Заготовка интерфейса. Далее добавим регистрацию, авторизацию и CRUD для статей.
+            </p>
+        </div>
+        <div class="lab8-hero-user">
+            <span>👤 {{ username }}</span>
+        </div>
+    </header>
+
+    <nav class="lab8-nav">
+        <a href="/lab8/articles">📚 <span>Список статей</span></a>
+        <a href="/lab8/create">✏️ <span>Создать статью</span></a>
+        <a href="/lab8/login">🔑 <span>Вход</span></a>
+        <a href="/lab8/register">👤 <span>Регистрация</span></a>
+    </nav>
+
+    <main class="lab8-main">
+        <section class="lab8-main-card">
+            <h2 class="lab8-main-title">Стартовая страница</h2>
+            <p class="lab8-text">
+                На этом этапе подготовлена структура интерфейса и навигация по разделам лабораторной работы.
+                Ссылки ведут на страницы авторизации, регистрации, просмотра списка статей и создания новой статьи.
+            </p>
+        </section>
+
+        <aside class="lab8-side-card">
+            <h3 class="lab8-side-title">Что появится дальше</h3>
+            <div class="lab8-feature-list">
+                <article class="lab8-feature">
+                    <div class="lab8-feature-icon">🗄️</div>
+                    <div class="lab8-feature-title">ORM и база данных</div>
+                    <p class="lab8-feature-text">
+                        Подключим Flask-SQLAlchemy, опишем модели пользователей и статей, создадим таблицы.
+                    </p>
+                </article>
+
+                <article class="lab8-feature">
+                    <div class="lab8-feature-icon">🔐</div>
+                    <div class="lab8-feature-title">Регистрация и вход</div>
+                    <p class="lab8-feature-text">
+                        Реализуем регистрацию, авторизацию и защиту страниц через Flask-Login.
+                    </p>
+                </article>
+
+                <article class="lab8-feature">
+                    <div class="lab8-feature-icon">📝</div>
+                    <div class="lab8-feature-title">CRUD для статей</div>
+                    <p class="lab8-feature-text">
+                        Добавим создание, редактирование и удаление статей с привязкой к пользователю.
+                    </p>
+                </article>
+            </div>
+        </aside>
+    </main>
+</div>
+{% endblock %}
