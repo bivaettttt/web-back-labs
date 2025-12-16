@@ -47,9 +47,7 @@
         color: var(--lab8-text-main);
     }
 
-    .lab8-field label {
-        font-weight: 600;
-    }
+    .lab8-field label { font-weight: 600; }
 
     .lab8-input, .lab8-textarea {
         width: 100%;
@@ -108,10 +106,7 @@
         text-decoration: none;
     }
 
-    .lab8-btn:hover {
-        background: #1d4ed8;
-        transform: translateY(-1px);
-    }
+    .lab8-btn:hover { background: #1d4ed8; transform: translateY(-1px); }
 
     .lab8-btn-secondary {
         background: #ffffff;
@@ -127,26 +122,26 @@
 </style>
 
 <div class="lab8-auth-page">
-    <h1 class="lab8-auth-title">Создать статью</h1>
+    <h1 class="lab8-auth-title">Редактирование статьи</h1>
 
     <div class="lab8-form-card">
         {% if error %}
             <div class="lab8-error">{{ error }}</div>
         {% endif %}
 
-        <form method="post" action="/lab8/create">
+        <form method="post" action="/lab8/edit/{{ article.id }}">
             <div class="lab8-field">
                 <label>Заголовок</label>
-                <input class="lab8-input" type="text" name="title" placeholder="Введите заголовок">
+                <input class="lab8-input" type="text" name="title" value="{{ article.title }}">
             </div>
 
             <div class="lab8-field">
                 <label>Текст статьи</label>
-                <textarea class="lab8-textarea" name="article_text" placeholder="Введите текст статьи"></textarea>
+                <textarea class="lab8-textarea" name="article_text">{{ article.article_text }}</textarea>
             </div>
 
             <div class="lab8-actions">
-                <button class="lab8-btn" type="submit">➕ Создать</button>
+                <button class="lab8-btn" type="submit">💾 Сохранить</button>
                 <a class="lab8-btn lab8-btn-secondary" href="/lab8/articles/">← К списку статей</a>
             </div>
         </form>

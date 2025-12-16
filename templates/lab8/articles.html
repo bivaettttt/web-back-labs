@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+<style>
+    :root {
+        --lab8-blue-main: #2563eb;
+        --lab8-blue-light: #e3f0ff;
+        --lab8-text-main: #111827;
+        --lab8-text-muted: #6b7280;
+        --lab8-border: #d1d5db;
+        --lab8-radius-lg: 18px;
+        --lab8-radius-md: 12px;
+        --lab8-transition: 0.18s ease;
+    }
+
+    .lab8-list-page {
+        max-width: 820px;
+        margin: 32px auto 40px;
+        padding: 0 16px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .lab8-list-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--lab8-text-main);
+        margin-bottom: 26px;
+        text-align: center;
+    }
+
+    .lab8-empty {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border-radius: var(--lab8-radius-lg);
+        background: var(--lab8-blue-light);
+        border: 1px solid var(--lab8-border);
+        color: var(--lab8-text-muted);
+        font-size: 15px;
+        text-align: center;
+        box-shadow: 0 6px 16px rgba(59,130,246,0.12);
+    }
+
+    .lab8-article-card {
+        background: #ffffff;
+        border-radius: var(--lab8-radius-lg);
+        padding: 20px 22px 22px;
+        border: 1px solid var(--lab8-border);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.06);
+        margin-bottom: 20px;
+        transition:
+            transform var(--lab8-transition),
+            box-shadow var(--lab8-transition),
+            border-color var(--lab8-transition);
+    }
+
+    .lab8-article-card:hover {
+        transform: translateY(-2px);
+        border-color: #93c5fd;
+        box-shadow: 0 12px 28px rgba(59,130,246,0.15);
+    }
+
+    .lab8-article-title {
+        margin: 0 0 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--lab8-text-main);
+    }
+
+    .lab8-article-text {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.55;
+        color: var(--lab8-text-muted);
+        white-space: pre-line;
+        padding-left: 14px;
+        border-left: 3px solid var(--lab8-blue-main);
+    }
+
+    .lab8-article-actions {
+        margin-top: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .lab8-article-actions-left,
+    .lab8-article-actions-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .lab8-fav-form,
+    .lab8-publish-form {
+        margin: 0;
+    }
+
+    .lab8-fav-btn {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 6px;
+        border-radius: 999px;
+        transition:
+            background var(--lab8-transition),
+            transform var(--lab8-transition),
+            color var(--lab8-transition);
+        color: #9ca3af;
+    }
+
+    .lab8-fav-btn:hover {
+        background: #f3f4f6;
+        transform: translateY(-1px);
+    }
+
+    .lab8-fav-btn.is-active {
+        color: #f97373;
+    }
+
+    .lab8-fav-btn.is-active:hover {
+        background: #fee2e2;
+    }
+
+    .lab8-publish-btn,
+    .lab8-article-edit,
+    .lab8-article-delete {
+        text-decoration: none;
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: var(--lab8-radius-md);
+        border: 1px solid var(--lab8-border);
+        background: #f9fafb;
+        color: var(--lab8-text-main);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition:
+            background var(--lab8-transition),
+            border-color var(--lab8-transition),
+            color var(--lab8-transition),
+            transform var(--lab8-transition);
+    }
+
+    .lab8-publish-btn:hover,
+    .lab8-article-edit:hover {
+        background: var(--lab8-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .lab8-publish-btn.is-active {
+        background: #ecfdf3;
+        border-color: #86efac;
+        color: #166534;
+    }
+
+    .lab8-publish-btn.is-active:hover {
+        background: #dcfce7;
+        border-color: #4ade80;
+    }
+
+    .lab8-article-delete {
+        background: #fef2f2;
+        border-color: #fecaca;
+        color: #b91c1c;
+    }
+
+    .lab8-article-delete:hover {
+        background: #fee2e2;
+        border-color: #fca5a5;
+        color: #991b1b;
+        transform: translateY(-1px);
+    }
+
+    .lab8-top-actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    .lab8-action-link {
+        text-decoration: none;
+        font-size: 13px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--lab8-border);
+        background: #ffffff;
+        color: var(--lab8-text-main);
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition:
+            background var(--lab8-transition),
+            border-color var(--lab8-transition),
+            color var(--lab8-transition),
+            transform var(--lab8-transition);
+    }
+
+    .lab8-action-link:hover {
+        background: var(--lab8-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .lab8-back-btn {
+        display: inline-block;
+        margin-top: 16px;
+        padding: 8px 14px;
+        background: #ffffff;
+        border: 1px solid var(--lab8-border);
+        border-radius: var(--lab8-radius-md);
+        font-size: 14px;
+        color: var(--lab8-text-main);
+        text-decoration: none;
+        transition:
+            background var(--lab8-transition),
+            border-color var(--lab8-transition),
+            color var(--lab8-transition),
+            transform var(--lab8-transition);
+    }
+
+    .lab8-back-btn:hover {
+        background: var(--lab8-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="lab8-list-page">
+    <h1 class="lab8-list-title">Статьи</h1>
+
+    <div class="lab8-top-actions">
+        <a class="lab8-action-link" href="/lab8/create">➕ <span>Создать статью</span></a>
+        <a class="lab8-action-link" href="/lab8/public">🌍 <span>Публичные статьи</span></a>
+    </div>
+
+    {% if articles|length == 0 %}
+        <div class="lab8-empty">Пока нет статей.</div>
+    {% endif %}
+
+    {% for article in articles %}
+    <div class="lab8-article-card">
+        <h2 class="lab8-article-title">{{ article.title }}</h2>
+        <p class="lab8-article-text">{{ article.article_text }}</p>
+
+        <div class="lab8-article-actions">
+            <div class="lab8-article-actions-left">
+                <!-- Лайк / избранное -->
+                <form class="lab8-fav-form" method="post" action="/lab8/toggle_favorite/{{ article.id }}">
+                    <button
+                        class="lab8-fav-btn {% if article.is_favorite %}is-active{% endif %}"
+                        type="submit"
+                        title="Добавить в любимые / убрать из любимых">
+                        ❤
+                    </button>
+                </form>
+
+                <!-- Публикация -->
+                <form class="lab8-publish-form" method="post" action="/lab8/toggle_public/{{ article.id }}">
+                    <button
+                        class="lab8-publish-btn {% if article.is_public %}is-active{% endif %}"
+                        type="submit">
+                        {% if article.is_public %}
+                            ✅ <span>Опубликована</span>
+                        {% else %}
+                            📢 <span>Опубликовать</span>
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+
+            <div class="lab8-article-actions-right">
+                <a class="lab8-article-edit" href="/lab8/edit/{{ article.id }}">
+                    ✏️ <span>Редактировать</span>
+                </a>
+
+                <form method="post" action="/lab8/delete/{{ article.id }}" style="margin: 0;">
+                    <button class="lab8-article-delete" type="submit"
+                            onclick="return confirm('Удалить эту статью?');">
+                        🗑️ <span>Удалить</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<a href="/lab8/" class="lab8-back-btn">← Вернуться в меню</a>
+{% endblock %}
