@@ -100,6 +100,29 @@
         padding: 8px 14px;
         cursor: pointer;
     }
+    .btn-close {
+        background: linear-gradient(135deg, #444, #222);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13pt;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    }
+
+    .btn-close:hover {
+        background: linear-gradient(135deg, #666, #333);
+        transform: translateY(-1px);
+        box-shadow: 0 5px 12px rgba(0,0,0,0.35);
+    }
+
+    .btn-close:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
 {% endblock %}
 
 {% block script %}
@@ -203,7 +226,7 @@
         <div id="modal-card">
         <div id="modal-text"></div>
         <img id="modal-gift" alt="gift" />
-        <button id="modal-close">Закрыть</button>
+        <button id="modal-close" class="btn-close">Закрыть</button>
         </div>
     </div>
 {% endblock %}
