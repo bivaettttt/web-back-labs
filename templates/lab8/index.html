@@ -254,9 +254,14 @@
 
     <nav class="lab8-nav">
         <a href="/lab8/articles">📚 <span>Список статей</span></a>
-        <a href="/lab8/create">✏️ <span>Создать статью</span></a>
-        <a href="/lab8/login">🔑 <span>Вход</span></a>
-        <a href="/lab8/register">👤 <span>Регистрация</span></a>
+
+        {% if current_user.is_authenticated %}
+            <a href="/lab8/create">✏️ <span>Создать статью</span></a>
+            <a href="/lab8/logout">🚪 <span>Выход</span></a>
+        {% else %}
+            <a href="/lab8/login">🔑 <span>Вход</span></a>
+            <a href="/lab8/register">👤 <span>Регистрация</span></a>
+        {% endif %}
     </nav>
 
     <main class="lab8-main">
