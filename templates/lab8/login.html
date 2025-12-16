@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+<style>
+    :root {
+        --lab8-blue-main: #2563eb;
+        --lab8-blue-light: #e3f0ff;
+        --lab8-text-main: #111827;
+        --lab8-text-muted: #6b7280;
+        --lab8-border: #d1d5db;
+        --lab8-radius-lg: 18px;
+        --lab8-radius-md: 12px;
+        --lab8-transition: 0.18s ease;
+    }
+
+    .lab8-auth-page {
+        max-width: 420px;
+        margin: 36px auto 40px;
+        padding: 0 12px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .lab8-auth-title {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--lab8-text-main);
+        margin-bottom: 22px;
+    }
+
+    .lab8-form-card {
+        background: #ffffff;
+        border-radius: var(--lab8-radius-lg);
+        padding: 26px 24px 28px;
+        border: 1px solid var(--lab8-border);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
+    }
+
+    .lab8-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 18px;
+        font-size: 14px;
+        color: var(--lab8-text-main);
+    }
+
+    .lab8-field label {
+        font-weight: 500;
+    }
+
+    .lab8-input {
+        padding: 9px 11px;
+        border-radius: var(--lab8-radius-md);
+        border: 1px solid var(--lab8-border);
+        background: #ffffff;
+        font-size: 14px;
+        transition: border-color var(--lab8-transition), background var(--lab8-transition);
+    }
+
+    .lab8-input:focus {
+        outline: none;
+        border-color: var(--lab8-blue-main);
+        background: var(--lab8-blue-light);
+    }
+
+    .lab8-submit {
+        width: 100%;
+        margin-top: 8px;
+        padding: 10px 0;
+        border: none;
+        border-radius: var(--lab8-radius-md);
+        background: var(--lab8-blue-main);
+        color: white;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background var(--lab8-transition), transform var(--lab8-transition);
+    }
+
+    .lab8-submit:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .lab8-submit:active {
+        transform: translateY(0);
+    }
+
+    .lab8-error {
+        padding: 10px 12px;
+        border-radius: var(--lab8-radius-md);
+        background: #ffe6e6;
+        color: #9b1c1c;
+        border: 1px solid #ef9a9a;
+        margin-bottom: 18px;
+        font-size: 14px;
+    }
+
+    .lab8-back-btn {
+        display: inline-block;
+        margin-top: 16px;
+        padding: 8px 14px;
+        background: #ffffff;
+        border: 1px solid var(--lab8-border);
+        border-radius: var(--lab8-radius-md);
+        font-size: 14px;
+        color: var(--lab8-text-main);
+        text-decoration: none;
+        transition:
+            background var(--lab8-transition),
+            border-color var(--lab8-transition),
+            color var(--lab8-transition),
+            transform var(--lab8-transition);
+    }
+
+    .lab8-back-btn:hover {
+        background: var(--lab8-blue-light);
+        border-color: #93c5fd;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="lab8-auth-page">
+    <h1 class="lab8-auth-title">Вход в систему</h1>
+
+    <div class="lab8-form-card">
+        {% if error %}
+            <div class="lab8-error">{{ error }}</div>
+        {% endif %}
+
+        <form action="/lab8/login" method="post">
+            <div class="lab8-field">
+                <label>Логин</label>
+                <input class="lab8-input" type="text" name="login">
+            </div>
+
+            <div class="lab8-field">
+                <label>Пароль</label>
+                <input class="lab8-input" type="password" name="password">
+            </div>
+
+            <button class="lab8-submit" type="submit">Вход</button>
+        </form>
+    </div>
+
+    <a href="/lab8/" class="lab8-back-btn">← Вернуться в меню</a>
+</div>
+{% endblock %}
